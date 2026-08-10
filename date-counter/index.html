@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>📅 Date Counter — Darius &amp; Mada</title>
+<style>
+:root{
+  --bg1:#0c0205;--bg2:#260510;--bg3:#4a0d1b;
+  --card:rgba(255,255,255,.05);--line:rgba(212,175,55,.25);
+  --gold:#d4af37;--gold2:#efd489;--rose:#e896a9;--rose2:#f6c8d4;
+  --text:#f7edf0;--muted:#c3a4ae;
+  --r:18px;--sh:0 14px 44px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;color:var(--text);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(1100px 550px at 85% -5%,rgba(212,175,55,.14),transparent 60%),
+    radial-gradient(900px 520px at 0% 110%,rgba(170,45,75,.4),transparent 60%),
+    linear-gradient(155deg,var(--bg1),var(--bg2) 55%,var(--bg3));
+  display:flex;flex-direction:column;align-items:center;
+  padding:64px 16px 60px;
+}
+.wrap{width:100%;max-width:640px;position:relative;z-index:1}
+h1{font-family:Georgia,"Times New Roman",serif;font-size:1.9rem;text-align:center;margin:0 0 6px;
+  background:linear-gradient(90deg,var(--gold2),var(--gold),var(--gold2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:.5px}
+.sub{text-align:center;color:var(--muted);margin:0 0 14px;font-size:.92rem}
+.divider{text-align:center;color:var(--gold);letter-spacing:6px;margin:0 0 20px;font-size:1rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);
+  padding:20px;backdrop-filter:blur(6px);margin:0 0 18px}
+input[type=date]{width:100%;background:rgba(0,0,0,.35);border:1px solid var(--line);border-radius:12px;
+  color:var(--text);padding:12px 14px;font:inherit;margin:0 0 10px;color-scheme:dark}
+input:focus{outline:1px solid var(--gold)}
+label{display:block;color:var(--muted);font-size:.85rem;margin:0 0 4px}
+button{background:linear-gradient(135deg,#7a1f33,#a63a52);border:1px solid rgba(239,212,137,.35);
+  color:#ffe9ef;font:inherit;font-weight:600;padding:12px 18px;border-radius:14px;cursor:pointer;
+  transition:transform .15s ease,box-shadow .2s ease}
+button:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(212,175,55,.25)}
+button:active{transform:translateY(0)}
+button.ghost{background:rgba(255,255,255,.06);border-color:var(--line)}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.bigday{text-align:center;padding:10px 0 4px}
+.bigday .n{font-size:3.4rem;font-weight:700;color:var(--gold2);font-family:Georgia,serif;line-height:1.1;font-variant-numeric:tabular-nums}
+.bigday .l{font-size:.9rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase}
+.since{text-align:center;color:var(--muted);font-size:.85rem;margin-bottom:4px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:18px 0}
+.tbox{background:rgba(0,0,0,.4);border:1px solid var(--line);border-radius:16px;padding:14px 8px;text-align:center}
+.tbox .n{font-size:1.5rem;font-weight:700;color:var(--rose2);line-height:1;font-variant-numeric:tabular-nums}
+.tbox .l{font-size:.7rem;color:var(--muted);margin-top:6px;letter-spacing:1px;text-transform:uppercase}
+.milestone{text-align:center;color:var(--rose2);font-size:1.05rem;line-height:1.6;padding:6px 0}
+.milestone b{color:var(--gold2)}
+.celebrate{animation:glow 1.2s ease-in-out infinite alternate}
+@keyframes glow{from{text-shadow:0 0 6px rgba(239,212,137,.3)}to{text-shadow:0 0 22px rgba(239,212,137,.9)}}
+.back{position:fixed;top:14px;left:14px;z-index:50}
+.back a{color:var(--gold2);text-decoration:none;font-size:.85rem;
+  background:rgba(0,0,0,.35);border:1px solid var(--line);padding:7px 12px;border-radius:12px}
+.back a:hover{border-color:var(--gold)}
+.heartfloat{position:fixed;bottom:-40px;z-index:0;opacity:0;pointer-events:none;animation:rise linear infinite}
+@keyframes rise{
+  0%{transform:translateY(0) rotate(0);opacity:0}
+  12%{opacity:.45}
+  85%{opacity:.3}
+  100%{transform:translateY(-105vh) rotate(22deg);opacity:0}
+}
+</style>
+</head>
+<body>
+<a class="back" href="../index.html">← Hub</a>
+<div class="wrap">
+  <h1>📅 Date Counter</h1>
+  <p class="sub">how long have we been us?</p>
+  <div class="divider">🌹 ✦ ❤️ ✦ 🌹</div>
+
+  <div class="card" id="configCard">
+    <label for="firstDate">Our first date</label>
+    <input id="firstDate" type="date">
+    <button id="saveBtn">Count from this day 💖</button>
+  </div>
+
+  <div class="card" id="liveCard" style="display:none">
+    <div class="since">since <b id="sinceFmt" style="color:var(--gold2)"></b></div>
+    <div class="bigday"><div class="n" id="days">0</div><div class="l">days together</div></div>
+    <div class="grid2">
+      <div class="tbox"><div class="n" id="w">0</div><div class="l">weeks</div></div>
+      <div class="tbox"><div class="n" id="mo">0</div><div class="l">months</div></div>
+      <div class="tbox"><div class="n" id="hrs">0</div><div class="l">hours</div></div>
+      <div class="tbox"><div class="n" id="mins">0</div><div class="l">minutes</div></div>
+      <div class="tbox"><div class="n" id="secs">0</div><div class="l">seconds</div></div>
+    </div>
+    <div class="milestone" id="mile">…</div>
+    <div class="milestone" id="nextMile">next milestone: <b id="nextVal"></b></div>
+    <div class="btnrow" style="margin-top:10px">
+      <button class="ghost" id="editBtn">Change date ✏️</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var KEY='dfp_firstdate';
+function load(){ try{ return JSON.parse(localStorage.getItem(KEY)) || null; }catch(e){ return null; } }
+function save(v){ localStorage.setItem(KEY, JSON.stringify(v)); }
+
+var cfg=load();
+var configCard=document.getElementById('configCard');
+var liveCard=document.getElementById('liveCard');
+var timer;
+
+function pad(n){ return String(n).padStart(2,'0'); }
+
+function startLive(start){
+  configCard.style.display='none';
+  liveCard.style.display='block';
+  document.getElementById('sinceFmt').textContent=start.toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'});
+  if(timer) clearInterval(timer);
+  timer=setInterval(tick,1000);
+  tick();
+}
+
+function fmtDays(d){
+  if(d>=1000000) return (d/1000000).toFixed(2).replace(/\.?0+$/,'')+'M';
+  if(d>=1000) return (d/1000).toFixed(2).replace(/\.?0+$/,'')+'K';
+  return String(d);
+}
+
+function tick(){
+  var start=new Date(cfg.start);
+  var now=new Date();
+  var ms=now-start;
+  var days=Math.floor(ms/86400000);
+  var secs=Math.floor(ms/1000);
+  var hrs=Math.floor(ms/3600000);
+  document.getElementById('days').textContent=fmtDays(days);
+  document.getElementById('w').textContent=Math.floor(days/7);
+  var months=(now.getFullYear()-start.getFullYear())*12+(now.getMonth()-start.getMonth());
+  if(now.getDate()<start.getDate()) months--;
+  document.getElementById('mo').textContent=months;
+  document.getElementById('hrs').textContent=hrs.toLocaleString();
+  document.getElementById('mins').textContent=(secs/60).toLocaleString();
+  document.getElementById('secs').textContent=secs.toLocaleString();
+
+  var next=Math.ceil(days/100)*100;
+  var remain=next-days;
+  document.getElementById('nextVal').textContent=next.toLocaleString()+' days ('+remain+' to go!)';
+
+  var mile=document.getElementById('mile');
+  var hit=false;
+  if(days>0 && days%100===0){ mile.textContent='🎉 '+next.toLocaleString()+' DAYS TOGETHER!!! 🎉'; hit=true; }
+  else if(days>0 && days%365===0){ mile.textContent='💖 '+Math.floor(days/365)+' YEAR'+(days/365>1?'S':'')+' TOGETHER!!! 💖'; hit=true; }
+  else mile.textContent='Every day with you is the best milestone 🌹';
+  mile.classList.toggle('celebrate',hit);
+}
+
+document.getElementById('saveBtn').onclick=function(){
+  var v=document.getElementById('firstDate').value;
+  if(!v){ alert('Pick our first date 💕'); return; }
+  var d=new Date(v+'T00:00:00');
+  cfg={start:d.getTime()};
+  save(cfg);
+  startLive(d);
+};
+
+document.getElementById('editBtn').onclick=function(){
+  if(timer) clearInterval(timer);
+  if(cfg){ document.getElementById('firstDate').value=new Date(cfg.start).toISOString().slice(0,10); }
+  configCard.style.display='block';
+  liveCard.style.display='none';
+};
+
+if(cfg){ startLive(new Date(cfg.start)); }
+</script>
+</body>
+</html>

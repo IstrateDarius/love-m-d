@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Darius &amp; Mada · Our Little Corner</title>
+<meta name="description" content="A little corner of the internet just for us.">
+<style>
+:root{
+  --bg1:#0c0205;--bg2:#260510;--bg3:#4a0d1b;
+  --card:rgba(255,255,255,.05);--line:rgba(212,175,55,.25);
+  --gold:#d4af37;--gold2:#efd489;--rose:#e896a9;--rose2:#f6c8d4;
+  --text:#f7edf0;--muted:#c3a4ae;
+  --r:18px;--sh:0 14px 44px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;color:var(--text);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(1100px 550px at 85% -5%,rgba(212,175,55,.14),transparent 60%),
+    radial-gradient(900px 520px at 0% 110%,rgba(170,45,75,.4),transparent 60%),
+    linear-gradient(155deg,var(--bg1),var(--bg2) 55%,var(--bg3));
+  display:flex;flex-direction:column;align-items:center;
+  padding:40px 16px 70px;
+}
+.wrap{width:100%;max-width:900px;position:relative;z-index:1}
+h1{
+  font-family:Georgia,"Times New Roman",serif;font-size:2.2rem;text-align:center;margin:0 0 6px;
+  background:linear-gradient(90deg,var(--gold2),var(--gold),var(--gold2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  letter-spacing:.5px;
+}
+h1 .name{font-style:italic}
+.sub{text-align:center;color:var(--muted);margin:0 0 10px;font-size:.95rem}
+.divider{text-align:center;color:var(--gold);letter-spacing:6px;font-size:1.1rem;margin:0 0 24px;opacity:.9}
+.namebar{display:flex;justify-content:center;align-items:center;gap:8px;margin:0 0 28px}
+.namebar label{color:var(--muted);font-size:.85rem}
+.namebar input{
+  width:170px;background:rgba(0,0,0,.35);border:1px solid var(--line);border-radius:12px;
+  color:var(--gold2);padding:8px 12px;font:inherit;font-weight:600;text-align:center;
+}
+.namebar input:focus{outline:1px solid var(--gold)}
+.hub-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:16px}
+.tile{
+  display:block;text-decoration:none;color:inherit;background:var(--card);
+  border:1px solid var(--line);border-radius:var(--r);padding:22px 18px;
+  box-shadow:var(--sh);transition:transform .18s ease,box-shadow .25s ease,border-color .25s;
+}
+.tile:hover{transform:translateY(-5px) scale(1.02);border-color:rgba(239,212,137,.55);box-shadow:0 20px 46px rgba(0,0,0,.6)}
+.tile:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.tile .ico{font-size:2.1rem;display:block;margin-bottom:10px}
+.tile h3{margin:0 0 6px;font-size:1.05rem;color:var(--gold2);font-family:Georgia,"Times New Roman",serif}
+.tile p{margin:0;color:var(--muted);font-size:.84rem;line-height:1.45}
+footer{text-align:center;color:var(--muted);margin-top:34px;font-size:.85rem}
+footer .hearts{color:var(--rose);letter-spacing:2px}
+.heartfloat{position:fixed;bottom:-40px;z-index:0;opacity:0;pointer-events:none;animation:rise linear infinite}
+@keyframes rise{
+  0%{transform:translateY(0) rotate(0);opacity:0}
+  12%{opacity:.5}
+  85%{opacity:.35}
+  100%{transform:translateY(-105vh) rotate(22deg);opacity:0}
+}
+@media(max-width:480px){
+  h1{font-size:1.7rem}
+  .hub-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Darius &amp; <span class="name" id="herName">Love</span></h1>
+  <p class="sub">a little corner of the internet, just for us</p>
+  <div class="divider">🌹 &nbsp;✦&nbsp; ❤️ &nbsp;✦&nbsp; 🌹</div>
+
+  <div class="namebar">
+    <label for="nameInput">Her name:</label>
+    <input id="nameInput" type="text" maxlength="24" placeholder="Her name">
+  </div>
+
+  <div class="hub-grid" id="grid"></div>
+
+  <footer>
+    <div class="hearts">❤️ 🌹 💌 🌹 ❤️</div>
+    <div>Made with love, for us · everything stays on this phone &amp; this device</div>
+  </footer>
+</div>
+
+<script>
+(function hearts(){
+  var em=['❤️','🌹','💌','✨','💖','🥀'];
+  for(var i=0;i<18;i++){
+    var s=document.createElement('span');
+    s.className='heartfloat';
+    s.textContent=em[i%em.length];
+    s.style.left=(Math.random()*100)+'vw';
+    s.style.fontSize=(10+Math.random()*22)+'px';
+    s.style.animationDuration=(9+Math.random()*14)+'s';
+    s.style.animationDelay=(Math.random()*12)+'s';
+    document.body.appendChild(s);
+  }
+})();
+
+var NKEY='dfp_her_name';
+var input=document.getElementById('nameInput');
+var nameEl=document.getElementById('herName');
+
+function setTitle(n){ nameEl.textContent = n || 'Mada'; }
+
+var stored=localStorage.getItem(NKEY);
+input.value = stored || 'Mada';
+setTitle(stored || 'Mada');
+input.addEventListener('input', function(e){
+  var v=e.target.value.trim();
+  localStorage.setItem(NKEY, v || 'Mada');
+  setTitle(v);
+});
+
+var APPS=[
+  ['love-notes','💌','Love Notes','Write little notes for each other, saved on this device.'],
+  ['countdown','⏳','Countdown','A live ticking clock to our next big moment.'],
+  ['reasons-i-love-you','💖','Reasons I Love You','Every reason, in one place. Tap for a reminder.'],
+  ['date-planner','🌹','Date Planner','Never run out of date ideas again.'],
+  ['love-quiz','💘','Love Quiz','How well do you really know me?'],
+  ['memory-book','📷','Memory Book','Our scrapbook of pictures and moments.'],
+  ['love-letters','✍️','Love Letters','Write letters, get a little inspiration.'],
+  ['anniversary','💍','Anniversary','Every second of us, counted out loud.'],
+  ['playlist','🎶','Our Playlist','Songs that sound like us.'],
+  ['good-morning-night','🌅','Good Morning / Night','Sweet words for the start and end of every day.'],
+  ['date-counter','📅','Date Counter','How long have we been us?'],
+  ['bucket-list','🧳','Bucket List','Everything we will do together.'],
+  ['love-meter','📊','Love Meter','A silly — but serious — reading.'],
+  ['compliment-generator','🌟','Compliment Generator','One tap, one truth.'],
+  ['pet-names','🧸','Pet Names','The goofiest nicknames for us.'],
+  ['virtual-hug','🫂','Virtual Hug','A hug, no matter how far apart we are.'],
+  ['relationship-timeline','🗓️','Our Timeline','Every milestone, recorded for keeps.'],
+  ['love-calculator','🧮','Love Calculator','The beautiful mathematics of us.'],
+  ['sweet-messages','💬','Sweet Messages','Tiny texts, big feelings.'],
+  ['our-song','🎵','Our Song','The one that belongs to us.'],
+  ['photo-love-letters','📸','Photo Love Letters','Polaroid pictures with words attached.'],
+  ['future-plans','🌈','Future Plans','The life we are building, board by board.'],
+  ['date-with-spice','🌶️','Date With Spice','Date night ideas with a naughty twist — for grown-up couples.'],
+  ['spicy-truth-or-dare','🔥','Spicy Truth or Dare','The classic game, our version. Choose your level of spice.'],
+  ['flirty-questions','😉','Flirty Questions','Playful questions that make you two blush and giggle.'],
+  ['couples-dice','🎲','Couples Dice','Roll the dice — romance, dare, or talk. You decide how far it goes.'],
+  ['desire-notes','💋','Desire Notes','Secret little messages for when you’re apart. Only for each other’s eyes.'],
+  ['positions','💞','Intimate Positions','Our private little guide — pick a mood, keep it playful, keep it ours.']
+];
+
+var grid=document.getElementById('grid');
+APPS.forEach(function(a){
+  var aEl=document.createElement('a');
+  aEl.className='tile';
+  aEl.href=a[0]+'/index.html';
+  aEl.innerHTML='<span class="ico">'+a[1]+'</span><h3>'+a[2]+'</h3><p>'+a[3]+'</p>';
+  grid.appendChild(aEl);
+});
+</script>
+</body>
+</html>

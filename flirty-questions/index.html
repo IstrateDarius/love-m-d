@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>😉 Flirty Questions — Darius &amp; Mada</title>
+<style>
+:root{
+  --bg1:#0c0205;--bg2:#260510;--bg3:#4a0d1b;
+  --card:rgba(255,255,255,.05);--line:rgba(212,175,55,.25);
+  --gold:#d4af37;--gold2:#efd489;--rose:#e896a9;--rose2:#f6c8d4;
+  --text:#f7edf0;--muted:#c3a4ae;--danger:#ff7b8a;
+  --r:18px;--sh:0 14px 44px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;color:var(--text);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(1100px 550px at 85% -5%,rgba(212,175,55,.14),transparent 60%),
+    radial-gradient(900px 520px at 0% 110%,rgba(170,45,75,.4),transparent 60%),
+    linear-gradient(155deg,var(--bg1),var(--bg2) 55%,var(--bg3));
+  display:flex;flex-direction:column;align-items:center;
+  padding:64px 16px 60px;
+}
+.wrap{width:100%;max-width:680px;position:relative;z-index:1}
+h1{font-family:Georgia,"Times New Roman",serif;font-size:1.9rem;text-align:center;margin:0 0 6px;
+  background:linear-gradient(90deg,var(--gold2),var(--gold),var(--gold2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:.5px}
+.sub{text-align:center;color:var(--muted);margin:0 0 14px;font-size:.92rem}
+.divider{text-align:center;color:var(--gold);letter-spacing:6px;margin:0 0 20px;font-size:1rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);
+  padding:22px;backdrop-filter:blur(6px);margin:0 0 18px;text-align:center}
+button{background:linear-gradient(135deg,#7a1f33,#a63a52);border:1px solid rgba(239,212,137,.35);
+  color:#ffe9ef;font:inherit;font-weight:600;padding:14px 24px;border-radius:14px;cursor:pointer;
+  transition:transform .15s ease,box-shadow .2s ease;font-size:1.02rem}
+button:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(212,175,55,.25)}
+button:active{transform:translateY(0)}
+.cats{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:14px 0 4px}
+.cat{border:1px solid var(--line);border-radius:12px;padding:8px 14px;font-size:.85rem;cursor:pointer;
+  background:rgba(0,0,0,.25);color:var(--muted);transition:all .15s ease}
+.cat.on{border-color:var(--gold);color:var(--gold2);background:rgba(212,175,55,.12)}
+.q{font-family:Georgia,"Times New Roman",serif;font-size:1.35rem;line-height:1.5;min-height:6.2em;
+  display:flex;align-items:center;justify-content:center;color:var(--rose2);padding:10px 4px}
+.meta{color:var(--muted);font-size:.82rem;margin-top:8px;min-height:1.2em}
+.back{position:fixed;top:14px;left:14px;z-index:50}
+.back a{color:var(--gold2);text-decoration:none;font-size:.85rem;
+  background:rgba(0,0,0,.35);border:1px solid var(--line);padding:7px 12px;border-radius:12px}
+.back a:hover{border-color:var(--gold)}
+</style>
+</head>
+<body>
+<a class="back" href="../index.html">← Hub</a>
+<div class="wrap">
+  <h1>😉 Flirty Questions</h1>
+  <p class="sub">playful little questions to make you two blush and giggle</p>
+  <div class="divider">🌹 ✦ 😏 ✦ 🌹</div>
+
+  <div class="card">
+    <div class="cats" id="cats"></div>
+    <div class="q" id="q">Ready when you are, darling 💋</div>
+    <button id="btn">Ask us one 😉</button>
+    <div class="meta" id="meta"></div>
+  </div>
+</div>
+
+<script>
+var DATA={
+  playful:[
+    'If our love story were a movie, what would the title be?',
+    'What’s the cheesiest pickup line that would still work on you — from me?',
+    'If you could steal one kiss from me right now without getting caught, where would it land?',
+    'What did you think I was like before we got together?',
+    'If I were a superpower, which one would I be?',
+    'What’s something I do that makes you smile without realising?',
+    'If we switched lives for a day, what’s the first thing you’d do in mine?',
+    'What would our celebrity couple name be?',
+    'What’s the most romantic thing you’ve imagined doing for me?',
+    'If you had to describe us in one word — which word would you never pick?'
+  ],
+  flirty:[
+    'What’s the first thing you notice when I walk into the room?',
+    'If you could kiss me anywhere right now — where and how?',
+    'What part of me do you want to touch most right now?',
+    'What did you think the first time I smiled at you?',
+    'Be honest — what’s the hottest outfit you’ve seen me in?',
+    'If I whispered something in your ear, what would you want it to be?',
+    'What’s your favourite way to be kissed — slow, teasing, or full of passion?',
+    'What would you do if we were alone right now and the lights went out?',
+    'Which part of you do you want me to kiss first tonight?',
+    'What’s one thing about me that always gets you going?'
+  ],
+  deep:[
+    'What’s one thing you’ve never told anyone but want to tell me?',
+    'What does “us forever” look like to you?',
+    'What’s the moment you knew I was the one?',
+    'What’s something you’re afraid of that I don’t know about?',
+    'What’s the best version of our future you can imagine?',
+    'What do you need from me that I don’t give you enough?',
+    'What memory of us do you replay in your head when you miss me?',
+    'What’s the one promise you want me to make you tonight?',
+    'What part of my soul do you love that I hide from everyone else?',
+    'If you could relive one moment with me, which one would it be?'
+  ]
+};
+var CATS=[['playful','🎈 Playful',0],['flirty','😏 Flirty',1],['deep','🕯️ Deep',2]];
+var catKey='flirty';
+var last=-1;
+
+var catsEl=document.getElementById('cats');
+CATS.forEach(function(c){
+  var b=document.createElement('span');
+  b.className='cat'+(c[0]===catKey?' on':'');
+  b.textContent=c[1];
+  b.onclick=function(){
+    catKey=c[0];
+    document.querySelectorAll('.cat').forEach(function(x){x.classList.remove('on');});
+    b.classList.add('on');
+  };
+  catsEl.appendChild(b);
+});
+
+function pick(){
+  var arr=DATA[catKey];
+  var i;
+  do{ i=Math.floor(Math.random()*arr.length); }while(arr.length>1 && i===last);
+  last=i;
+  document.getElementById('q').textContent=arr[i];
+  document.getElementById('meta').textContent='Category: '+CATS.find(function(c){return c[0]===catKey;})[1]+' · now answer honestly 😉';
+}
+document.getElementById('btn').onclick=pick;
+pick();
+</script>
+</body>
+</html>

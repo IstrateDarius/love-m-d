@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>✍️ Love Letters — Darius &amp; Mada</title>
+<style>
+:root{
+  --bg1:#0c0205;--bg2:#260510;--bg3:#4a0d1b;
+  --card:rgba(255,255,255,.05);--line:rgba(212,175,55,.25);
+  --gold:#d4af37;--gold2:#efd489;--rose:#e896a9;--rose2:#f6c8d4;
+  --text:#f7edf0;--muted:#c3a4ae;--danger:#ff7b8a;
+  --r:18px;--sh:0 14px 44px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;color:var(--text);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(1100px 550px at 85% -5%,rgba(212,175,55,.14),transparent 60%),
+    radial-gradient(900px 520px at 0% 110%,rgba(170,45,75,.4),transparent 60%),
+    linear-gradient(155deg,var(--bg1),var(--bg2) 55%,var(--bg3));
+  display:flex;flex-direction:column;align-items:center;
+  padding:64px 16px 60px;
+}
+.wrap{width:100%;max-width:640px;position:relative;z-index:1}
+h1{font-family:Georgia,"Times New Roman",serif;font-size:1.9rem;text-align:center;margin:0 0 6px;
+  background:linear-gradient(90deg,var(--gold2),var(--gold),var(--gold2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:.5px}
+.sub{text-align:center;color:var(--muted);margin:0 0 14px;font-size:.92rem}
+.divider{text-align:center;color:var(--gold);letter-spacing:6px;margin:0 0 20px;font-size:1rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);
+  padding:20px;backdrop-filter:blur(6px);margin:0 0 18px}
+input[type=text],textarea{width:100%;background:rgba(0,0,0,.35);border:1px solid var(--line);border-radius:12px;
+  color:var(--text);padding:12px 14px;font:inherit;margin:0 0 10px}
+input:focus,textarea:focus{outline:1px solid var(--gold)}
+textarea{min-height:150px;resize:vertical;font-family:Georgia,"Times New Roman",serif;font-size:1.02rem;line-height:1.6}
+button{background:linear-gradient(135deg,#7a1f33,#a63a52);border:1px solid rgba(239,212,137,.35);
+  color:#ffe9ef;font:inherit;font-weight:600;padding:12px 18px;border-radius:14px;cursor:pointer;
+  transition:transform .15s ease,box-shadow .2s ease}
+button:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(212,175,55,.25)}
+button:active{transform:translateY(0)}
+button.ghost{background:rgba(255,255,255,.06);border-color:var(--line)}
+button.gold{background:linear-gradient(135deg,#b8860b,#d4af37);color:#2a1202;border-color:transparent}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap}
+.quote{font-family:Georgia,"Times New Roman",serif;font-style:italic;text-align:center;font-size:1.1rem;
+  color:var(--rose2);line-height:1.6;padding:6px 4px}
+.quote .qsrc{display:block;margin-top:8px;font-style:normal;font-size:.8rem;color:var(--muted)}
+.list{list-style:none;margin:0;padding:0}
+.list li{background:rgba(0,0,0,.28);border:1px solid var(--line);border-radius:14px;
+  padding:12px 14px;margin-bottom:10px}
+.list li .lt{color:var(--gold2);font-family:Georgia,serif;font-weight:600}
+.list li .when{color:var(--muted);font-size:.75rem;margin-top:2px}
+.list li .lbody{white-space:pre-wrap;margin-top:8px;line-height:1.5;font-family:Georgia,serif;max-height:120px;overflow:hidden}
+.list li .lbody.open{max-height:none}
+.view{color:var(--gold2);background:transparent;border:1px solid var(--gold);padding:5px 10px;
+  border-radius:10px;font-size:.8rem;margin-top:8px}
+.del{background:transparent;border:1px solid rgba(255,123,138,.4);color:var(--danger);
+  padding:5px 10px;border-radius:10px;font-size:.8rem;margin-left:8px}
+.view:hover,.del:hover{box-shadow:none;transform:none}
+.del:hover{background:rgba(255,123,138,.12)}
+.empty{color:var(--muted);font-style:italic;text-align:center;padding:10px}
+.back{position:fixed;top:14px;left:14px;z-index:50}
+.back a{color:var(--gold2);text-decoration:none;font-size:.85rem;
+  background:rgba(0,0,0,.35);border:1px solid var(--line);padding:7px 12px;border-radius:12px}
+.back a:hover{border-color:var(--gold)}
+.saved{color:#7ddb9a;font-size:.82rem;margin-left:6px;opacity:0;transition:opacity .3s}
+.saved.show{opacity:1}
+.pop{animation:pop .45s cubic-bezier(.2,1.6,.4,1)}
+@keyframes pop{0%{transform:scale(.85);opacity:0}100%{transform:scale(1);opacity:1}}
+.heartfloat{position:fixed;bottom:-40px;z-index:0;opacity:0;pointer-events:none;animation:rise linear infinite}
+@keyframes rise{
+  0%{transform:translateY(0) rotate(0);opacity:0}
+  12%{opacity:.45}
+  85%{opacity:.3}
+  100%{transform:translateY(-105vh) rotate(22deg);opacity:0}
+}
+</style>
+</head>
+<body>
+<a class="back" href="../index.html">← Hub</a>
+<div class="wrap">
+  <h1>✍️ Love Letters</h1>
+  <p class="sub">write it down — some feelings deserve ink</p>
+  <div class="divider">🌹 ✦ ❤️ ✦ 🌹</div>
+
+  <div class="card">
+    <div class="btnrow" style="margin-bottom:12px">
+      <button class="ghost" id="inspireBtn">Inspire me 💡</button>
+    </div>
+    <div class="quote" id="quote">“A bell is no bell till you ring it… a song is no song till you sing it — and love isn’t love till you give it away.”<span class="qsrc">— a little borrowed romance</span></div>
+  </div>
+
+  <div class="card">
+    <input id="letterTitle" type="text" placeholder="Title — e.g. To you, on an ordinary Tuesday">
+    <textarea id="letter" placeholder="My dearest…"></textarea>
+    <div class="btnrow">
+      <button id="saveBtn">Keep this letter 💌</button>
+      <button class="ghost" id="clearBtn">Start over</button>
+      <span class="saved" id="savedTip">draft saved ✓</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 style="margin-top:0;color:var(--gold2);font-family:Georgia,serif;font-size:1.15rem">Our letters (<span id="count">0</span>)</h2>
+    <ul class="list" id="list"></ul>
+    <div class="empty" id="empty">No letters saved yet — write one above 🌹</div>
+  </div>
+</div>
+
+<script>
+var KEY='dfp_letters';
+var DKEY='dfp_letter_draft';
+var QUOTES=[
+  ['I carry your heart with me (I carry it in my heart).','— e.e. cummings'],
+  ['In all the world, there is no heart for me like yours. In all the world, there is no love for you like mine.','— Maya Angelou'],
+  ['Whatever our souls are made of, his and mine are the same.','— Emily Brontë'],
+  ['To love and be loved is to feel the sun from both sides.','— David Viscott'],
+  ['I have loved you in numberless forms, numberless times, in life after life, in age after age, forever.','— Rabindranath Tagore'],
+  ['You know you are in love when you cannot fall asleep because reality is finally better than your dreams.','— Dr. Seuss'],
+  ['Love is composed of a single soul inhabiting two bodies.','— Aristotle'],
+  ['I would rather share one lifetime with you than face all the ages of this world alone.','— J.R.R. Tolkien'],
+  ['The best thing to hold onto in life is each other.','— Audrey Hepburn'],
+  ['Grow old along with me! The best is yet to be.','— Robert Browning'],
+  ['I love you not only for what you are, but for what I am when I am with you.','— Roy Croft'],
+  ['Every love story is beautiful, but ours is my favourite.','— a saying for us']
+];
+function load(){ try{ return JSON.parse(localStorage.getItem(KEY)) || []; }catch(e){ return []; } }
+function save(v){ localStorage.setItem(KEY, JSON.stringify(v)); }
+
+var letters=load();
+var ta=document.getElementById('letter');
+var savedTip=document.getElementById('savedTip');
+
+function fmt(d){ return new Date(d).toLocaleString(undefined,{month:'short',day:'numeric',year:'numeric',hour:'2-digit',minute:'2-digit'}); }
+
+function render(){
+  var l=document.getElementById('list');
+  l.innerHTML='';
+  document.getElementById('count').textContent=letters.length;
+  document.getElementById('empty').style.display = letters.length ? 'none':'block';
+  letters.slice().reverse().forEach(function(x){
+    var li=document.createElement('li');
+    var t=document.createElement('div'); t.className='lt'; t.textContent=x.t;
+    var w=document.createElement('div'); w.className='when'; w.textContent=fmt(x.d);
+    var b=document.createElement('div'); b.className='lbody'; b.textContent=x.b;
+    var r=document.createElement('div');
+    var v=document.createElement('button'); v.className='view'; v.textContent='Read / hide';
+    v.onclick=function(){ b.classList.toggle('open'); };
+    var del=document.createElement('button'); del.className='del'; del.textContent='Delete';
+    del.onclick=function(){ letters=letters.filter(function(y){return y!==x;}); save(letters); render(); };
+    r.appendChild(v); r.appendChild(del);
+    li.appendChild(t); li.appendChild(w); li.appendChild(b); li.appendChild(r);
+    l.appendChild(li);
+  });
+}
+
+document.getElementById('inspireBtn').onclick=function(){
+  var q=QUOTES[Math.floor(Math.random()*QUOTES.length)];
+  var el=document.getElementById('quote');
+  el.innerHTML='“'+q[0]+'”<span class="qsrc">'+q[1]+'</span>';
+  el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop');
+};
+
+document.getElementById('saveBtn').onclick=function(){
+  var t=document.getElementById('letterTitle').value.trim();
+  var b=ta.value.trim();
+  if(!b){ ta.focus(); return; }
+  letters.push({t:t||'A letter, dated '+new Date().toLocaleDateString(),b:b,d:Date.now()});
+  save(letters); render();
+  document.getElementById('letterTitle').value=''; ta.value='';
+  localStorage.removeItem(DKEY);
+  savedTip.textContent='letter saved 💌';
+  savedTip.classList.add('show'); setTimeout(function(){ savedTip.classList.remove('show'); },2000);
+};
+
+document.getElementById('clearBtn').onclick=function(){
+  document.getElementById('letterTitle').value=''; ta.value='';
+  localStorage.removeItem(DKEY);
+  savedTip.textContent='draft cleared';
+  savedTip.classList.add('show'); setTimeout(function(){ savedTip.classList.remove('show'); },2000);
+};
+
+var debounce;
+ta.addEventListener('input',function(){
+  clearTimeout(debounce);
+  debounce=setTimeout(function(){
+    if(ta.value.trim()){ localStorage.setItem(DKEY, JSON.stringify({t:document.getElementById('letterTitle').value,b:ta.value})); }
+    savedTip.classList.add('show'); setTimeout(function(){ savedTip.classList.remove('show'); },1500);
+  },600);
+});
+try{
+  var d=JSON.parse(localStorage.getItem(DKEY)||'null');
+  if(d){ document.getElementById('letterTitle').value=d.t||''; ta.value=d.b||''; }
+}catch(e){}
+
+render();
+</script>
+</body>
+</html>

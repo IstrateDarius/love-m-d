@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>🌶️ Date With Spice — Darius &amp; Mada</title>
+<style>
+:root{
+  --bg1:#0c0205;--bg2:#260510;--bg3:#4a0d1b;
+  --card:rgba(255,255,255,.05);--line:rgba(212,175,55,.25);
+  --gold:#d4af37;--gold2:#efd489;--rose:#e896a9;--rose2:#f6c8d4;
+  --text:#f7edf0;--muted:#c3a4ae;--danger:#ff7b8a;
+  --r:18px;--sh:0 14px 44px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;color:var(--text);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(1100px 550px at 85% -5%,rgba(212,175,55,.14),transparent 60%),
+    radial-gradient(900px 520px at 0% 110%,rgba(170,45,75,.4),transparent 60%),
+    linear-gradient(155deg,var(--bg1),var(--bg2) 55%,var(--bg3));
+  display:flex;flex-direction:column;align-items:center;
+  padding:64px 16px 60px;
+}
+.wrap{width:100%;max-width:680px;position:relative;z-index:1}
+h1{font-family:Georgia,"Times New Roman",serif;font-size:1.9rem;text-align:center;margin:0 0 6px;
+  background:linear-gradient(90deg,var(--gold2),var(--gold),var(--gold2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:.5px}
+.sub{text-align:center;color:var(--muted);margin:0 0 14px;font-size:.92rem}
+.divider{text-align:center;color:var(--gold);letter-spacing:6px;margin:0 0 20px;font-size:1rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);
+  padding:22px;backdrop-filter:blur(6px);margin:0 0 18px;text-align:center}
+button{background:linear-gradient(135deg,#7a1f33,#a63a52);border:1px solid rgba(239,212,137,.35);
+  color:#ffe9ef;font:inherit;font-weight:600;padding:14px 24px;border-radius:14px;cursor:pointer;
+  transition:transform .15s ease,box-shadow .2s ease;font-size:1.02rem}
+button:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(212,175,55,.25)}
+button:active{transform:translateY(0)}
+.tiers{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:14px 0 4px}
+.tier{border:1px solid var(--line);border-radius:12px;padding:8px 14px;font-size:.85rem;cursor:pointer;
+  background:rgba(0,0,0,.25);color:var(--muted);transition:all .15s ease}
+.tier.on{border-color:var(--gold);color:var(--gold2);background:rgba(212,175,55,.12)}
+.idea{font-family:Georgia,"Times New Roman",serif;font-size:1.35rem;line-height:1.5;min-height:6.2em;
+  display:flex;align-items:center;justify-content:center;color:var(--rose2);padding:10px 4px}
+.meta{color:var(--muted);font-size:.82rem;margin-top:8px;min-height:1.2em}
+.heartfloat{position:fixed;bottom:-40px;z-index:0;opacity:0;pointer-events:none;animation:rise linear infinite}
+@keyframes rise{
+  0%{transform:translateY(0) rotate(0);opacity:0}
+  12%{opacity:.45}
+  85%{opacity:.3}
+  100%{transform:translateY(-105vh) rotate(22deg);opacity:0}
+}
+.back{position:fixed;top:14px;left:14px;z-index:50}
+.back a{color:var(--gold2);text-decoration:none;font-size:.85rem;
+  background:rgba(0,0,0,.35);border:1px solid var(--line);padding:7px 12px;border-radius:12px}
+.back a:hover{border-color:var(--gold)}
+</style>
+</head>
+<body>
+<a class="back" href="../index.html">← Hub</a>
+<div class="wrap">
+  <h1>🌶️ Date With Spice</h1>
+  <p class="sub">grown-up date nights for two — pick your heat, press for an idea</p>
+  <div class="divider">🌹 ✦ 🔥 ✦ 🌹</div>
+
+  <div class="card">
+    <div class="tiers" id="tiers"></div>
+    <div class="idea" id="idea">Press the button, darling 😉</div>
+    <button id="btn">Give us a date 🌹</button>
+    <div class="meta" id="meta"></div>
+  </div>
+</div>
+
+<script>
+var DATA={
+  romantic:[
+    'Candlelit dinner at home — no phones, just the two of you and slow music.',
+    'Late-night walk with a flask of hot wine and zero plan.',
+    'Stargazing on a blanket; each star gets a memory you name.',
+    'Cook each other’s favourite childhood dish, then taste-test them side by side.',
+    'A slow dance in the living room to your song, barefoot and laughing.',
+    'Bathtub date: candles, music, a bottle of bubbly, and no rush at all.',
+    'Sunrise picnic — watch the day start with your favourite person.',
+    'Write a letter to each other at a quiet café, then swap and read them there.',
+    'Take the slowest possible walk and tell each other one secret per kilometre.',
+    'Rent a place with a fireplace for the weekend and never leave the room.'
+  ],
+  flirty:[
+    'Makeout session with a twist: every time you laugh, the other one kisses your neck.',
+    'Wine-tasting date where every sip comes with a compliment about each other.',
+    'Dress up fancy for dinner at home — then slowly undress each other after.',
+    'Play “who lasts longer” — the first one to look away during a stare-down owes a kiss.',
+    'Feed each other dessert with your eyes locked the whole time. No giggling allowed.',
+    'A shower-for-two date: soft music, warm water, wash each other’s hair slowly.',
+    'Date where the only rule is: every question gets answered with a kiss first.',
+    'Steal each other’s hoodie, then spend the night guessing whose scent lingers.',
+    'Mirror date: slow-dance while watching yourselves — it gets flirty fast.',
+    'Truth session with drinks: three truths and a dare, alternating, no passes.'
+  ],
+  naughty:[
+    'Strip poker — but you play for promises instead of chips. The winner keeps them.',
+    'Blindfolded date: one of you leads, the other trusts. Things get handsy.',
+    'A massage date that starts professional… and “forgets” the table rules.',
+    'Roll a die before bed: 1-2 she chooses, 3-4 he chooses, 5-6 you both choose. No vetoes.',
+    'The 5-minute challenge: each of you plans one surprise for the other. No refusing.',
+    'Date where the loser of every game removes one item of clothing. Best of three.',
+    'Sensory date: blindfold, headphones of music, and only touch to communicate.',
+    'Recreate your first date — then end it the way you wish it had ended back then.',
+    'A “yes, and…” evening: everything your partner suggests, you agree to. All night.',
+    'Write one wish each, seal the envelopes, and open them when the lights go low.'
+  ]
+};
+var TIERS=[
+  ['romantic','🌹 Romantic',0],
+  ['flirty','😏 Flirty',1],
+  ['naughty','🔥 Naughty',2]
+];
+var tierKey='romantic';
+var last=-1;
+
+var tiersEl=document.getElementById('tiers');
+TIERS.forEach(function(t){
+  var b=document.createElement('span');
+  b.className='tier'+(t[1]===TIERS[0][1]?' on':'');
+  b.textContent=t[1];
+  b.onclick=function(){
+    tierKey=t[0];
+    document.querySelectorAll('.tier').forEach(function(x){x.classList.remove('on');});
+    b.classList.add('on');
+  };
+  tiersEl.appendChild(b);
+});
+
+function pick(){
+  var arr=DATA[tierKey];
+  var i;
+  do{ i=Math.floor(Math.random()*arr.length); }while(arr.length>1 && i===last);
+  last=i;
+  document.getElementById('idea').textContent=arr[i];
+  document.getElementById('meta').textContent='Level: '+(TIERS.find(function(t){return t[0]===tierKey;})[1])+' · rolled just for you two';
+}
+document.getElementById('btn').onclick=pick;
+pick();
+</script>
+</body>
+</html>

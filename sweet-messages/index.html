@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>💬 Sweet Messages — Darius &amp; Mada</title>
+<style>
+:root{
+  --bg1:#0c0205;--bg2:#260510;--bg3:#4a0d1b;
+  --card:rgba(255,255,255,.05);--line:rgba(212,175,55,.25);
+  --gold:#d4af37;--gold2:#efd489;--rose:#e896a9;--rose2:#f6c8d4;
+  --text:#f7edf0;--muted:#c3a4ae;--danger:#ff7b8a;
+  --r:18px;--sh:0 14px 44px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;color:var(--text);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(1100px 550px at 85% -5%,rgba(212,175,55,.14),transparent 60%),
+    radial-gradient(900px 520px at 0% 110%,rgba(170,45,75,.4),transparent 60%),
+    linear-gradient(155deg,var(--bg1),var(--bg2) 55%,var(--bg3));
+  display:flex;flex-direction:column;align-items:center;
+  padding:64px 16px 60px;
+}
+.wrap{width:100%;max-width:640px;position:relative;z-index:1}
+h1{font-family:Georgia,"Times New Roman",serif;font-size:1.9rem;text-align:center;margin:0 0 6px;
+  background:linear-gradient(90deg,var(--gold2),var(--gold),var(--gold2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:.5px}
+.sub{text-align:center;color:var(--muted);margin:0 0 14px;font-size:.92rem}
+.divider{text-align:center;color:var(--gold);letter-spacing:6px;margin:0 0 20px;font-size:1rem}
+.chat{background:rgba(0,0,0,.3);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);
+  padding:16px;margin:0 0 14px;min-height:320px;max-height:52vh;overflow-y:auto}
+.bub{max-width:78%;padding:10px 14px;border-radius:16px;margin-bottom:8px;line-height:1.45;font-size:.95rem;
+  word-wrap:break-word;animation:pop .3s cubic-bezier(.2,1.6,.4,1)}
+.bub.me{align-self:flex-end;background:linear-gradient(135deg,#7a1f33,#a63a52);border-bottom-right-radius:4px;margin-left:auto;text-align:left}
+.bub.you{align-self:flex-start;background:rgba(255,255,255,.09);border:1px solid var(--line);border-bottom-left-radius:4px}
+.bub .who{font-size:.68rem;color:var(--gold2);opacity:.85;letter-spacing:.6px;text-transform:uppercase;margin-bottom:3px}
+.bub .tm{font-size:.68rem;color:var(--muted);margin-top:4px;text-align:right}
+@keyframes pop{0%{transform:scale(.8);opacity:0}100%{transform:scale(1);opacity:1}}
+.typing{color:var(--muted);font-size:.8rem;font-style:italic;padding:2px 4px 8px}
+input[type=text]{width:100%;background:rgba(0,0,0,.35);border:1px solid var(--line);border-radius:12px;
+  color:var(--text);padding:12px 14px;font:inherit}
+input:focus{outline:1px solid var(--gold)}
+button{background:linear-gradient(135deg,#7a1f33,#a63a52);border:1px solid rgba(239,212,137,.35);
+  color:#ffe9ef;font:inherit;font-weight:600;padding:12px 18px;border-radius:14px;cursor:pointer;
+  transition:transform .15s ease,box-shadow .2s ease}
+button:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(212,175,55,.25)}
+button:active{transform:translateY(0)}
+button.gold{background:linear-gradient(135deg,#b8860b,#d4af37);color:#2a1202;border-color:transparent}
+.sendrow{display:flex;gap:8px}
+.sendrow input{flex:1}
+.stickers{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 14px}
+.st{font-size:1.4rem;padding:8px 10px;border-radius:12px;background:rgba(255,255,255,.06);
+  border:1px solid var(--line);cursor:pointer;transition:transform .12s}
+.st:hover{transform:scale(1.25)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.chip{font-size:.8rem;padding:7px 12px;border-radius:20px;background:rgba(255,255,255,.06);
+  border:1px solid var(--line);cursor:pointer;color:var(--rose2)}
+.chip:hover{background:rgba(212,175,55,.15);border-color:var(--gold)}
+.clearline{display:flex;justify-content:flex-end;margin-top:10px}
+.ghost{background:transparent;border:1px solid var(--line);color:var(--muted);padding:8px 14px;font-size:.82rem}
+.ghost:hover{color:var(--text);border-color:var(--gold);box-shadow:none;transform:none}
+.back{position:fixed;top:14px;left:14px;z-index:50}
+.back a{color:var(--gold2);text-decoration:none;font-size:.85rem;
+  background:rgba(0,0,0,.35);border:1px solid var(--line);padding:7px 12px;border-radius:12px}
+.back a:hover{border-color:var(--gold)}
+.heartfloat{position:fixed;bottom:-40px;z-index:0;opacity:0;pointer-events:none;animation:rise linear infinite}
+@keyframes rise{
+  0%{transform:translateY(0) rotate(0);opacity:0}
+  12%{opacity:.45}
+  85%{opacity:.3}
+  100%{transform:translateY(-105vh) rotate(22deg);opacity:0}
+}
+</style>
+</head>
+<body>
+<a class="back" href="../index.html">← Hub</a>
+<div class="wrap">
+  <h1>💬 Sweet Messages</h1>
+  <p class="sub">a little chatroom just for us — type something sweet</p>
+  <div class="divider">🌹 ✦ ❤️ ✦ 🌹</div>
+
+  <div class="chat" id="chat"></div>
+  <div class="typing" id="typing" style="display:none">they're typing… 💭</div>
+
+  <div class="chips" id="chips"></div>
+  <div class="stickers" id="stickers"></div>
+  <div class="sendrow">
+    <input id="msg" type="text" placeholder="Say something sweet…" maxlength="500">
+    <button id="sendBtn" class="gold">Send 💌</button>
+  </div>
+  <div class="clearline">
+    <button class="ghost" id="clearBtn">Clear this chat</button>
+  </div>
+</div>
+
+<script>
+var KEY='dfp_chat';
+var SIDES=['you','me'];
+var STICK=['💖','🌹','😘','💋','✨','🫶','🥰','❤️','💌','💘','🌙','🌈'];
+var CHIPS=['Good morning, my love','Thinking of you','You make today better','Can\'t wait to see you','You\'re so beautiful','I love you','Miss you already','Come cuddle'];
+var REPLIES=[
+  'You always know exactly what to say 💖',
+  'Said it, meant it 🫶',
+  'Right back at you 🥰',
+  'My heart did a little flip 💘',
+  'Keep talking, I\'m smiling 😊',
+  'How did you get this cute 💌',
+  'You\'re the best part of my day 🌹',
+  'I love you more, sorry ✨',
+  'I was just about to say that 😘',
+  'Where do I find a person like you? oh wait, I did 💗'
+];
+function load(){ try{ return JSON.parse(localStorage.getItem(KEY)) || []; }catch(e){ return []; } }
+function save(v){ localStorage.setItem(KEY, JSON.stringify(v)); }
+
+var msgs=load();
+var chat=document.getElementById('chat');
+var msgInput=document.getElementById('msg');
+
+function fmt(d){ return new Date(d).toLocaleTimeString(undefined,{hour:'2-digit',minute:'2-digit'}); }
+
+function addMsg(who,t){
+  var d=document.createElement('div');
+  d.className='bub '+who;
+  var w=document.createElement('div'); w.className='who'; w.textContent = who==='me' ? 'you' : 'them';
+  var b=document.createElement('div'); b.textContent=t;
+  var tm=document.createElement('div'); tm.className='tm'; tm.textContent=fmt(Date.now());
+  d.appendChild(w); d.appendChild(b); d.appendChild(tm);
+  chat.appendChild(d);
+  chat.scrollTop=chat.scrollHeight;
+  return d;
+}
+
+function render(){
+  chat.innerHTML='';
+  msgs.forEach(function(m){ addMsg(m.who,m.t); });
+  chat.scrollTop=chat.scrollHeight;
+}
+
+function send(who,t,opt){
+  opt=opt||{};
+  msgs.push({who:who,t:t,d:Date.now()});
+  save(msgs);
+  if(!opt.silent){ render(); }
+}
+
+document.getElementById('sendBtn').onclick=function(){
+  var v=msgInput.value.trim();
+  if(!v) return;
+  send('me',v);
+  msgInput.value='';
+  reply();
+};
+
+msgInput.addEventListener('keydown',function(e){
+  if(e.key==='Enter'){ document.getElementById('sendBtn').onclick(); }
+});
+
+function reply(){
+  document.getElementById('typing').style.display='block';
+  chat.scrollTop=chat.scrollHeight;
+  setTimeout(function(){
+    document.getElementById('typing').style.display='none';
+    send('you',REPLIES[Math.floor(Math.random()*REPLIES.length)]);
+    render();
+  }, 1200+Math.random()*1200);
+}
+
+CHIPS.forEach(function(c){
+  var s=document.createElement('span'); s.className='chip'; s.textContent=c;
+  s.onclick=function(){ msgInput.value=c; msgInput.focus(); };
+  document.getElementById('chips').appendChild(s);
+});
+STICK.forEach(function(e){
+  var s=document.createElement('span'); s.className='st'; s.textContent=e;
+  s.onclick=function(){ msgInput.value=(msgInput.value+' '+e).trim(); msgInput.focus(); };
+  document.getElementById('stickers').appendChild(s);
+});
+
+document.getElementById('clearBtn').onclick=function(){
+  if(confirm('Clear this chat?')){ msgs=[]; save(msgs); render(); }
+};
+
+render();
+</script>
+</body>
+</html>

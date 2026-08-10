@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>💌 Love Notes — Darius &amp; Mada</title>
+<style>
+:root{
+  --bg1:#0c0205;--bg2:#260510;--bg3:#4a0d1b;
+  --card:rgba(255,255,255,.05);--line:rgba(212,175,55,.25);
+  --gold:#d4af37;--gold2:#efd489;--rose:#e896a9;--rose2:#f6c8d4;
+  --text:#f7edf0;--muted:#c3a4ae;--danger:#ff7b8a;
+  --r:18px;--sh:0 14px 44px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;color:var(--text);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(1100px 550px at 85% -5%,rgba(212,175,55,.14),transparent 60%),
+    radial-gradient(900px 520px at 0% 110%,rgba(170,45,75,.4),transparent 60%),
+    linear-gradient(155deg,var(--bg1),var(--bg2) 55%,var(--bg3));
+  display:flex;flex-direction:column;align-items:center;
+  padding:64px 16px 60px;
+}
+.wrap{width:100%;max-width:640px;position:relative;z-index:1}
+h1{font-family:Georgia,"Times New Roman",serif;font-size:1.9rem;text-align:center;margin:0 0 6px;
+  background:linear-gradient(90deg,var(--gold2),var(--gold),var(--gold2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:.5px}
+.sub{text-align:center;color:var(--muted);margin:0 0 14px;font-size:.92rem}
+.divider{text-align:center;color:var(--gold);letter-spacing:6px;margin:0 0 20px;font-size:1rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);
+  padding:20px;backdrop-filter:blur(6px);margin:0 0 18px}
+textarea{width:100%;background:rgba(0,0,0,.35);border:1px solid var(--line);border-radius:12px;
+  color:var(--text);padding:12px 14px;font:inherit;min-height:110px;resize:vertical;margin:0 0 10px}
+textarea:focus{outline:1px solid var(--gold)}
+button{background:linear-gradient(135deg,#7a1f33,#a63a52);border:1px solid rgba(239,212,137,.35);
+  color:#ffe9ef;font:inherit;font-weight:600;padding:12px 18px;border-radius:14px;cursor:pointer;
+  transition:transform .15s ease,box-shadow .2s ease}
+button:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(212,175,55,.25)}
+button:active{transform:translateY(0)}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap}
+.list{list-style:none;margin:0;padding:0}
+.list li{background:rgba(0,0,0,.28);border:1px solid var(--line);border-radius:14px;
+  padding:12px 14px;margin-bottom:10px}
+.list li .when{color:var(--gold);font-size:.75rem;font-weight:600;letter-spacing:.5px}
+.list li p{white-space:pre-wrap;margin:4px 0 0;line-height:1.5}
+.del{background:transparent;border:1px solid rgba(255,123,138,.4);color:var(--danger);
+  padding:6px 10px;border-radius:10px;font-size:.8rem;margin-top:8px}
+.del:hover{background:rgba(255,123,138,.12);box-shadow:none;transform:none}
+.empty{color:var(--muted);font-style:italic;text-align:center;padding:12px}
+.back{position:fixed;top:14px;left:14px;z-index:50}
+.back a{color:var(--gold2);text-decoration:none;font-size:.85rem;
+  background:rgba(0,0,0,.35);border:1px solid var(--line);padding:7px 12px;border-radius:12px}
+.back a:hover{border-color:var(--gold)}
+.heartfloat{position:fixed;bottom:-40px;z-index:0;opacity:0;pointer-events:none;animation:rise linear infinite}
+@keyframes rise{
+  0%{transform:translateY(0) rotate(0);opacity:0}
+  12%{opacity:.45}
+  85%{opacity:.3}
+  100%{transform:translateY(-105vh) rotate(22deg);opacity:0}
+}
+</style>
+</head>
+<body>
+<a class="back" href="../index.html">← Hub</a>
+<div class="wrap">
+  <h1>💌 Love Notes</h1>
+  <p class="sub">little notes for each other, kept safe here</p>
+  <div class="divider">🌹 ✦ ❤️ ✦ 🌹</div>
+
+  <div class="card">
+    <textarea id="note" placeholder="Write a note for the one you love…"></textarea>
+    <div class="btnrow">
+      <button id="addBtn">Save note 💌</button>
+      <button id="clearBtn" class="btn-clear">Clear box</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 style="margin-top:0;color:var(--gold2);font-family:Georgia,serif;font-size:1.15rem">Saved notes (<span id="count">0</span>)</h2>
+    <ul class="list" id="list"></ul>
+    <div class="empty" id="empty">No notes yet — write the first one above 🌹</div>
+  </div>
+</div>
+
+<script>
+var KEY='dfp_love_notes';
+var clearBtn=document.querySelector('.btn-clear');
+
+function load(){ try{ return JSON.parse(localStorage.getItem(KEY)) || []; }catch(e){ return []; } }
+function save(v){ localStorage.setItem(KEY, JSON.stringify(v)); }
+
+var notes=load();
+var listEl=document.getElementById('list');
+var emptyEl=document.getElementById('empty');
+var countEl=document.getElementById('count');
+
+function fmt(d){
+  var dt=new Date(d);
+  return dt.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})+' · '+dt.toLocaleTimeString(undefined,{hour:'2-digit',minute:'2-digit'});
+}
+
+function render(){
+  listEl.innerHTML='';
+  countEl.textContent=notes.length;
+  emptyEl.style.display = notes.length ? 'none':'block';
+  notes.slice().reverse().forEach(function(n,i){
+    var li=document.createElement('li');
+    var when=document.createElement('div'); when.className='when'; when.textContent=fmt(n.d);
+    var p=document.createElement('p'); p.textContent=n.t;
+    var b=document.createElement('button'); b.className='del'; b.textContent='Delete ✕';
+    b.onclick=function(){ notes=notes.filter(function(x){return x!==n;}); save(notes); render(); };
+    li.appendChild(when); li.appendChild(p); li.appendChild(b);
+    listEl.appendChild(li);
+  });
+}
+
+document.getElementById('addBtn').onclick=function(){
+  var v=document.getElementById('note').value.trim();
+  if(!v){ document.getElementById('note').focus(); return; }
+  notes.push({t:v,d:Date.now()});
+  save(notes);
+  document.getElementById('note').value='';
+  render();
+};
+clearBtn.onclick=function(){ document.getElementById('note').value=''; document.getElementById('note').focus(); };
+
+render();
+
+(function hearts(){
+  var em=['❤️','🌹','💌','✨','💖'];
+  for(var i=0;i<14;i++){
+    var s=document.createElement('span');
+    s.className='heartfloat'; s.textContent=em[i%em.length];
+    s.style.left=(Math.random()*100)+'vw'; s.style.fontSize=(9+Math.random()*18)+'px';
+    s.style.animationDuration=(9+Math.random()*14)+'s'; s.style.animationDelay=(Math.random()*12)+'s';
+    document.body.appendChild(s);
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>💖 Reasons I Love You — Darius &amp; Mada</title>
+<style>
+:root{
+  --bg1:#0c0205;--bg2:#260510;--bg3:#4a0d1b;
+  --card:rgba(255,255,255,.05);--line:rgba(212,175,55,.25);
+  --gold:#d4af37;--gold2:#efd489;--rose:#e896a9;--rose2:#f6c8d4;
+  --text:#f7edf0;--muted:#c3a4ae;--danger:#ff7b8a;
+  --r:18px;--sh:0 14px 44px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;color:var(--text);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(1100px 550px at 85% -5%,rgba(212,175,55,.14),transparent 60%),
+    radial-gradient(900px 520px at 0% 110%,rgba(170,45,75,.4),transparent 60%),
+    linear-gradient(155deg,var(--bg1),var(--bg2) 55%,var(--bg3));
+  display:flex;flex-direction:column;align-items:center;
+  padding:64px 16px 60px;
+}
+.wrap{width:100%;max-width:640px;position:relative;z-index:1}
+h1{font-family:Georgia,"Times New Roman",serif;font-size:1.9rem;text-align:center;margin:0 0 6px;
+  background:linear-gradient(90deg,var(--gold2),var(--gold),var(--gold2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:.5px}
+.sub{text-align:center;color:var(--muted);margin:0 0 14px;font-size:.92rem}
+.divider{text-align:center;color:var(--gold);letter-spacing:6px;margin:0 0 20px;font-size:1rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);
+  padding:20px;backdrop-filter:blur(6px);margin:0 0 18px}
+input[type=text]{width:100%;background:rgba(0,0,0,.35);border:1px solid var(--line);border-radius:12px;
+  color:var(--text);padding:12px 14px;font:inherit;margin:0 0 10px}
+input:focus{outline:1px solid var(--gold)}
+button{background:linear-gradient(135deg,#7a1f33,#a63a52);border:1px solid rgba(239,212,137,.35);
+  color:#ffe9ef;font:inherit;font-weight:600;padding:12px 18px;border-radius:14px;cursor:pointer;
+  transition:transform .15s ease,box-shadow .2s ease}
+button:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(212,175,55,.25)}
+button:active{transform:translateY(0)}
+button.gold{background:linear-gradient(135deg,#b8860b,#d4af37);color:#2a1202;border-color:transparent}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap}
+.bigout{font-size:1.25rem;text-align:center;padding:28px 20px;border-radius:var(--r);
+  background:rgba(0,0,0,.32);border:1px dashed var(--gold);min-height:90px;
+  display:flex;align-items:center;justify-content:center;margin-bottom:18px;line-height:1.5}
+.list{list-style:none;margin:0;padding:0}
+.list li{background:rgba(0,0,0,.28);border:1px solid var(--line);border-radius:14px;
+  padding:10px 14px;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.list li .txt{flex:1;line-height:1.4}
+.del{background:transparent;border:1px solid rgba(255,123,138,.4);color:var(--danger);
+  padding:5px 9px;border-radius:10px;font-size:.8rem}
+.del:hover{background:rgba(255,123,138,.12);box-shadow:none;transform:none}
+.empty{color:var(--muted);font-style:italic;text-align:center;padding:10px}
+.back{position:fixed;top:14px;left:14px;z-index:50}
+.back a{color:var(--gold2);text-decoration:none;font-size:.85rem;
+  background:rgba(0,0,0,.35);border:1px solid var(--line);padding:7px 12px;border-radius:12px}
+.back a:hover{border-color:var(--gold)}
+.pop{animation:pop .45s cubic-bezier(.2,1.6,.4,1)}
+@keyframes pop{0%{transform:scale(.7);opacity:0}100%{transform:scale(1);opacity:1}}
+.heartfloat{position:fixed;bottom:-40px;z-index:0;opacity:0;pointer-events:none;animation:rise linear infinite}
+@keyframes rise{
+  0%{transform:translateY(0) rotate(0);opacity:0}
+  12%{opacity:.45}
+  85%{opacity:.3}
+  100%{transform:translateY(-105vh) rotate(22deg);opacity:0}
+}
+</style>
+</head>
+<body>
+<a class="back" href="../index.html">← Hub</a>
+<div class="wrap">
+  <h1>💖 Reasons I Love You</h1>
+  <p class="sub">every reason, kept safe · tap whenever you need reminding</p>
+  <div class="divider">🌹 ✦ ❤️ ✦ 🌹</div>
+
+  <div class="card" style="text-align:center">
+    <button class="gold" id="randBtn" style="font-size:1.05rem">Show me a reason 💘</button>
+    <div class="bigout" id="out" style="margin-top:16px">Tap the button…</div>
+  </div>
+
+  <div class="card">
+    <h2 style="margin-top:0;color:var(--gold2);font-family:Georgia,serif;font-size:1.15rem">All the reasons (<span id="count">0</span>)</h2>
+    <div class="btnrow" style="margin-bottom:10px">
+      <input id="newReason" type="text" placeholder="Add a new reason…" style="flex:1;margin:0">
+      <button id="addBtn">Add 💖</button>
+    </div>
+    <ul class="list" id="list"></ul>
+    <div class="empty" id="empty">No reasons yet — add your first one above 🌹</div>
+  </div>
+</div>
+
+<script>
+var KEY='dfp_reasons';
+var DEFAULTS=[
+  'The way you smile when you see me',
+  'How safe I feel with you',
+  'Your laugh — my favourite sound',
+  'The way you remember the little things',
+  'How you make ordinary days feel special',
+  'Your eyes when you talk about what you love',
+  'The way you hold my hand',
+  'How patient you are with me',
+  'Your hugs at the end of a long day',
+  'The way you say my name'
+];
+function load(){ try{ var v=JSON.parse(localStorage.getItem(KEY)); return Array.isArray(v)?v:null; }catch(e){ return null; } }
+function save(v){ localStorage.setItem(KEY, JSON.stringify(v)); }
+
+var reasons=load() || DEFAULTS;
+if(load()===null){ save(reasons); }
+var listEl=document.getElementById('list');
+var emptyEl=document.getElementById('empty');
+var countEl=document.getElementById('count');
+var out=document.getElementById('out');
+
+function render(){
+  listEl.innerHTML='';
+  countEl.textContent=reasons.length;
+  emptyEl.style.display = reasons.length ? 'none':'block';
+  reasons.forEach(function(r){
+    var li=document.createElement('li');
+    var sp=document.createElement('span'); sp.className='txt'; sp.textContent=r;
+    var b=document.createElement('button'); b.className='del'; b.textContent='✕';
+    b.onclick=function(){
+      reasons=reasons.filter(function(x){return x!==r;});
+      save(reasons); render();
+    };
+    li.appendChild(sp); li.appendChild(b);
+    listEl.appendChild(li);
+  });
+}
+
+document.getElementById('randBtn').onclick=function(){
+  if(!reasons.length){ out.textContent='No reasons yet — add some below 💔'; return; }
+  out.textContent=reasons[Math.floor(Math.random()*reasons.length)]+' 💖';
+  out.classList.remove('pop'); void out.offsetWidth; out.classList.add('pop');
+};
+
+document.getElementById('addBtn').onclick=function(){
+  var v=document.getElementById('newReason').value.trim();
+  if(!v) return;
+  reasons.push(v); save(reasons); render();
+  document.getElementById('newReason').value='';
+};
+
+render();
+</script>
+</body>
+</html>

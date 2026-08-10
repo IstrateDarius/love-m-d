@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>📸 Photo Love Letters — Darius &amp; Mada</title>
+<style>
+:root{
+  --bg1:#0c0205;--bg2:#260510;--bg3:#4a0d1b;
+  --card:rgba(255,255,255,.05);--line:rgba(212,175,55,.25);
+  --gold:#d4af37;--gold2:#efd489;--rose:#e896a9;--rose2:#f6c8d4;
+  --text:#f7edf0;--muted:#c3a4ae;--danger:#ff7b8a;
+  --r:18px;--sh:0 14px 44px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;color:var(--text);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(1100px 550px at 85% -5%,rgba(212,175,55,.14),transparent 60%),
+    radial-gradient(900px 520px at 0% 110%,rgba(170,45,75,.4),transparent 60%),
+    linear-gradient(155deg,var(--bg1),var(--bg2) 55%,var(--bg3));
+  display:flex;flex-direction:column;align-items:center;
+  padding:64px 16px 60px;
+}
+.wrap{width:100%;max-width:820px;position:relative;z-index:1}
+h1{font-family:Georgia,"Times New Roman",serif;font-size:1.9rem;text-align:center;margin:0 0 6px;
+  background:linear-gradient(90deg,var(--gold2),var(--gold),var(--gold2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:.5px}
+.sub{text-align:center;color:var(--muted);margin:0 0 14px;font-size:.92rem}
+.divider{text-align:center;color:var(--gold);letter-spacing:6px;margin:0 0 20px;font-size:1rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);
+  padding:20px;backdrop-filter:blur(6px);margin:0 0 18px}
+input[type=text],textarea{width:100%;background:rgba(0,0,0,.35);border:1px solid var(--line);border-radius:12px;
+  color:var(--text);padding:12px 14px;font:inherit;margin:0 0 10px}
+input:focus,textarea:focus{outline:1px solid var(--gold)}
+textarea{min-height:70px;resize:vertical}
+.filebtn{position:relative;display:inline-block;overflow:hidden}
+.filebtn input{position:absolute;left:0;top:0;opacity:0;width:100%;height:100%;cursor:pointer}
+button{background:linear-gradient(135deg,#7a1f33,#a63a52);border:1px solid rgba(239,212,137,.35);
+  color:#ffe9ef;font:inherit;font-weight:600;padding:12px 18px;border-radius:14px;cursor:pointer;
+  transition:transform .15s ease,box-shadow .2s ease}
+button:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(212,175,55,.25)}
+button:active{transform:translateY(0)}
+button:disabled{opacity:.55;cursor:default;transform:none;box-shadow:none}
+button.gold{background:linear-gradient(135deg,#b8860b,#d4af37);color:#2a1202;border-color:transparent}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.warn{color:#ffcf66;font-size:.82rem;line-height:1.4;margin-top:10px}
+.status{color:#9fe0a8;font-size:.85rem;margin-top:10px;min-height:1.2em}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:22px;padding:10px 4px}
+.pol{background:#f7f2ea;border-radius:4px;padding:12px 12px 14px;box-shadow:0 16px 34px rgba(0,0,0,.5);
+  transform:rotate(var(--rot,-1deg));transition:transform .2s ease;position:relative}
+.pol:nth-child(even){--rot:1.4deg}
+.pol:hover{transform:rotate(0) scale(1.02)}
+.pol img{width:100%;height:190px;object-fit:cover;display:block;border-radius:2px;background:#e8e0d4}
+.pol .capt{font-family:"Segoe Script","Comic Sans MS","Brush Script MT",cursive;color:#3a2a22;
+  font-size:1rem;line-height:1.45;padding:10px 4px 2px;min-height:34px;text-align:center}
+.pol .d{font-family:Georgia,serif;color:#8a7365;font-size:.72rem;text-align:center;letter-spacing:.6px;text-transform:uppercase}
+.pol .delrow{display:flex;justify-content:center;padding-top:8px}
+.del{background:rgba(255,123,138,.12);border:1px solid rgba(180,60,80,.5);color:#b04a5e;
+  padding:5px 10px;border-radius:10px;font-size:.78rem;font-family:system-ui}
+.del:hover{background:rgba(255,123,138,.25);box-shadow:none;transform:none}
+.empty{color:var(--muted);font-style:italic;text-align:center;padding:40px 10px}
+.back{position:fixed;top:14px;left:14px;z-index:50}
+.back a{color:var(--gold2);text-decoration:none;font-size:.85rem;
+  background:rgba(0,0,0,.35);border:1px solid var(--line);padding:7px 12px;border-radius:12px}
+.back a:hover{border-color:var(--gold)}
+.heartfloat{position:fixed;bottom:-40px;z-index:0;opacity:0;pointer-events:none;animation:rise linear infinite}
+@keyframes rise{
+  0%{transform:translateY(0) rotate(0);opacity:0}
+  12%{opacity:.45}
+  85%{opacity:.3}
+  100%{transform:translateY(-105vh) rotate(22deg);opacity:0}
+}
+</style>
+</head>
+<body>
+<a class="back" href="../index.html">← Hub</a>
+<div class="wrap">
+  <h1>📸 Photo Love Letters</h1>
+  <p class="sub">a picture, a few words — a love letter that fits in your hand</p>
+  <div class="divider">🌹 ✦ ❤️ 🌹</div>
+
+  <div class="card">
+    <div class="btnrow">
+      <span class="filebtn"><button id="pickBtn">Add a photo 📸</button><input id="fileInput" type="file" accept="image/*"></span>
+    </div>
+    <textarea id="letterText" placeholder="Your words for this one… (keep them few and true)"></textarea>
+    <button id="pinBtn" class="gold">Pin it to our wall 💘</button>
+    <p class="warn">💾 Photos are auto-compressed and kept in this browser's big photo album (IndexedDB) — they stay on this device, forever.</p>
+    <div class="status" id="status"></div>
+  </div>
+
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="empty">Loading polaroids…</div>
+</div>
+
+<script src="../shared.js"></script>
+<script>
+var KEY='dfp_photo_letters';
+var cards=[];
+var grid=document.getElementById('grid');
+var emptyEl=document.getElementById('empty');
+var statusEl=document.getElementById('status');
+var pending=null;
+var busy=false;
+
+function fmt(d){
+  return new Date(d).toLocaleDateString(undefined,{month:'long',year:'numeric'});
+}
+function setStatus(msg){ statusEl.textContent=msg||''; }
+
+function render(){
+  grid.innerHTML='';
+  emptyEl.style.display = cards.length ? 'none':'block';
+  cards.slice().reverse().forEach(function(c){
+    var p=document.createElement('div'); p.className='pol';
+    var img=document.createElement('img'); img.src=c.src; img.alt='photo love letter';
+    var cap=document.createElement('div'); cap.className='capt'; cap.textContent=c.t;
+    var d=document.createElement('div'); d.className='d'; d.textContent=fmt(c.d);
+    var dr=document.createElement('div'); dr.className='delrow';
+    var del=document.createElement('button'); del.className='del'; del.textContent='Remove ✕';
+    del.onclick=function(){
+      cards=cards.filter(function(x){return x!==c;});
+      DB.set(KEY, cards).then(function(){ render(); });
+    };
+    dr.appendChild(del);
+    p.appendChild(img); p.appendChild(cap); p.appendChild(d); p.appendChild(dr);
+    grid.appendChild(p);
+  });
+}
+
+DB.get(KEY).then(function(saved){
+  cards = Array.isArray(saved) ? saved : [];
+  emptyEl.textContent='No polaroids yet — add the first one above 🌹';
+  emptyEl.style.display = cards.length ? 'none':'block';
+  render();
+}).catch(function(){ render(); });
+
+document.getElementById('fileInput').onchange=function(ev){
+  var f=ev.target.files[0];
+  if(!f || busy) return;
+  if(!f.type || f.type.indexOf('image/')!==0){ alert('Please choose an image 💕'); ev.target.value=''; return; }
+  busy=true;
+  document.getElementById('pickBtn').disabled=true;
+  setStatus('Compressing photo…');
+  DB.saveImage(null, f).then(function(dataUrl){
+    pending=dataUrl;
+    busy=false;
+    document.getElementById('pickBtn').disabled=false;
+    setStatus('✅ Photo ready — write your words, then pin it 💘');
+    document.getElementById('letterText').focus();
+  }).catch(function(){
+    busy=false;
+    document.getElementById('pickBtn').disabled=false;
+    setStatus('⚠️ Could not process that photo — try another one 💕');
+  });
+  ev.target.value='';
+};
+
+document.getElementById('pinBtn').onclick=function(){
+  if(!pending){ alert('Choose a photo first 📸'); return; }
+  var t=document.getElementById('letterText').value.trim();
+  cards.push({src:pending,t:t||'💖 us',d:Date.now()});
+  DB.set(KEY, cards).then(function(ok){
+    setStatus(ok ? '✅ Pinned! It’ll be here after refresh.' : '⚠️ Could not save — storage is full. Remove a few first.');
+    pending=null;
+    document.getElementById('letterText').value='';
+    render();
+  });
+};
+
+render();
+</script>
+</body>
+</html>

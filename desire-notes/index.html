@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>💋 Desire Notes — Darius &amp; Mada</title>
+<style>
+:root{
+  --bg1:#0c0205;--bg2:#260510;--bg3:#4a0d1b;
+  --card:rgba(255,255,255,.05);--line:rgba(212,175,55,.25);
+  --gold:#d4af37;--gold2:#efd489;--rose:#e896a9;--rose2:#f6c8d4;
+  --text:#f7edf0;--muted:#c3a4ae;--danger:#ff7b8a;
+  --r:18px;--sh:0 14px 44px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;color:var(--text);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(1100px 550px at 85% -5%,rgba(212,175,55,.14),transparent 60%),
+    radial-gradient(900px 520px at 0% 110%,rgba(170,45,75,.4),transparent 60%),
+    linear-gradient(155deg,var(--bg1),var(--bg2) 55%,var(--bg3));
+  display:flex;flex-direction:column;align-items:center;
+  padding:64px 16px 60px;
+}
+.wrap{width:100%;max-width:720px;position:relative;z-index:1}
+h1{font-family:Georgia,"Times New Roman",serif;font-size:1.9rem;text-align:center;margin:0 0 6px;
+  background:linear-gradient(90deg,var(--gold2),var(--gold),var(--gold2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:.5px}
+.sub{text-align:center;color:var(--muted);margin:0 0 14px;font-size:.92rem}
+.divider{text-align:center;color:var(--gold);letter-spacing:6px;margin:0 0 20px;font-size:1rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);
+  padding:20px;backdrop-filter:blur(6px);margin:0 0 18px}
+textarea{width:100%;background:rgba(0,0,0,.35);border:1px solid var(--line);border-radius:12px;
+  color:var(--text);padding:12px 14px;font:inherit;margin:0 0 10px;min-height:80px;resize:vertical}
+textarea:focus{outline:1px solid var(--gold)}
+button{background:linear-gradient(135deg,#7a1f33,#a63a52);border:1px solid rgba(239,212,137,.35);
+  color:#ffe9ef;font:inherit;font-weight:600;padding:12px 18px;border-radius:14px;cursor:pointer;
+  transition:transform .15s ease,box-shadow .2s ease}
+button:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(212,175,55,.25)}
+button:active{transform:translateY(0)}
+button:disabled{opacity:.55;cursor:default;transform:none;box-shadow:none}
+button.gold{background:linear-gradient(135deg,#b8860b,#d4af37);color:#2a1202;border-color:transparent}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.status{color:#9fe0a8;font-size:.85rem;margin-top:10px;min-height:1.2em}
+.lock{text-align:center;color:var(--muted);font-size:.82rem;margin-bottom:14px}
+.notes{display:flex;flex-direction:column;gap:12px}
+.note{background:rgba(0,0,0,.3);border:1px solid var(--line);border-radius:14px;padding:14px 16px;
+  box-shadow:var(--sh);animation:fadein .3s ease}
+@keyframes fadein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.note .txt{color:var(--rose2);font-size:1rem;line-height:1.5;white-space:pre-wrap}
+.note .when{font-size:.75rem;color:var(--muted);margin-top:8px}
+.note .delrow{display:flex;justify-content:flex-end;margin-top:6px}
+.del{background:transparent;border:1px solid rgba(255,123,138,.4);color:var(--danger);
+  padding:5px 10px;border-radius:10px;font-size:.78rem}
+.del:hover{background:rgba(255,123,138,.12);box-shadow:none;transform:none}
+.empty{color:var(--muted);font-style:italic;text-align:center;padding:30px 10px}
+.back{position:fixed;top:14px;left:14px;z-index:50}
+.back a{color:var(--gold2);text-decoration:none;font-size:.85rem;
+  background:rgba(0,0,0,.35);border:1px solid var(--line);padding:7px 12px;border-radius:12px}
+.back a:hover{border-color:var(--gold)}
+</style>
+</head>
+<body>
+<a class="back" href="../index.html">← Hub</a>
+<div class="wrap">
+  <h1>💋 Desire Notes</h1>
+  <p class="sub">secret little messages for when you’re apart — only for each other’s eyes</p>
+  <div class="divider">🌹 ✦ 🔐 ✦ 🌹</div>
+
+  <div class="card">
+    <div class="lock" id="lockMsg">Enter the passcode we both know 💕</div>
+    <textarea id="passInput" placeholder="Passcode…"></textarea>
+    <div class="btnrow">
+      <button id="unlockBtn">Unlock our notes 🔐</button>
+      <button id="newNoteBtn" style="display:none" class="gold">New desire note ✍️</button>
+    </div>
+    <div class="status" id="status"></div>
+  </div>
+
+  <div id="editor" class="card" style="display:none">
+    <textarea id="noteText" placeholder="Write what you want to tell them… (kept on this device)"></textarea>
+    <button id="saveBtn" class="gold">Save note 💋</button>
+    <div class="status" id="edStatus"></div>
+  </div>
+
+  <div id="notes" class="notes"></div>
+  <div class="empty" id="empty" style="display:none">No desire notes yet — that’s a shame 😏</div>
+</div>
+
+<script src="../shared.js"></script>
+<script>
+var KEY='dfp_desire_notes';
+var CODE_KEY='dfp_desire_code';
+var PASS='';           // the stored passcode (defaults 'mada')
+var unlocked=false;
+var notes=[];
+var notesEl=document.getElementById('notes');
+var emptyEl=document.getElementById('empty');
+
+function fmt(d){
+  return new Date(d).toLocaleString(undefined,{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+}
+function setStatus(el,msg){ el.textContent=msg||''; }
+
+function render(){
+  notesEl.innerHTML='';
+  emptyEl.style.display = notes.length ? 'none':'block';
+  notes.slice().reverse().forEach(function(n){
+    var d=document.createElement('div'); d.className='note';
+    var txt=document.createElement('div'); txt.className='txt'; txt.textContent=n.t;
+    var when=document.createElement('div'); when.className='when'; when.textContent=fmt(n.d);
+    var dr=document.createElement('div'); dr.className='delrow';
+    var del=document.createElement('button'); del.className='del'; del.textContent='Remove ✕';
+    del.onclick=function(){
+      notes=notes.filter(function(x){return x!==n;});
+      DB.set(KEY,notes).then(function(){ render(); });
+    };
+    dr.appendChild(del);
+    d.appendChild(txt); d.appendChild(when); d.appendChild(dr);
+    notesEl.appendChild(d);
+  });
+}
+
+DB.get(CODE_KEY).then(function(c){
+  PASS = c || 'mada';
+  document.getElementById('lockMsg').textContent='Enter the passcode we both know 💕'+(c?'':' (default: mada)');
+});
+
+function tryUnlock(){
+  var v=document.getElementById('passInput').value.trim().toLowerCase();
+  if(v!==PASS){ setStatus(document.getElementById('status'),'❌ Nope. Try again, sneaky 😏'); return; }
+  unlocked=true;
+  document.getElementById('passInput').style.display='none';
+  document.getElementById('unlockBtn').style.display='none';
+  document.getElementById('newNoteBtn').style.display='inline-block';
+  document.getElementById('lockMsg').style.display='none';
+  setStatus(document.getElementById('status'),'✅ Unlocked. These are only yours two.');
+  DB.get(KEY).then(function(saved){
+    notes = Array.isArray(saved) ? saved : [];
+    render();
+  });
+}
+document.getElementById('unlockBtn').onclick=tryUnlock;
+document.getElementById('passInput').addEventListener('keydown',function(e){ if(e.key==='Enter') tryUnlock(); });
+
+document.getElementById('newNoteBtn').onclick=function(){
+  document.getElementById('editor').style.display='block';
+  document.getElementById('noteText').focus();
+};
+document.getElementById('saveBtn').onclick=function(){
+  var t=document.getElementById('noteText').value.trim();
+  if(!t){ setStatus(document.getElementById('edStatus'),'Write something first 💋'); return; }
+  notes.push({t:t,d:Date.now()});
+  DB.set(KEY,notes).then(function(ok){
+    setStatus(document.getElementById('edStatus'), ok ? '✅ Saved — it’ll be here after refresh.' : '⚠️ Could not save.');
+    document.getElementById('noteText').value='';
+    document.getElementById('editor').style.display='none';
+    render();
+  });
+};
+</script>
+</body>
+</html>

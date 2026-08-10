@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>🎵 Our Song — Darius &amp; Mada</title>
+<style>
+:root{
+  --bg1:#0c0205;--bg2:#260510;--bg3:#4a0d1b;
+  --card:rgba(255,255,255,.05);--line:rgba(212,175,55,.25);
+  --gold:#d4af37;--gold2:#efd489;--rose:#e896a9;--rose2:#f6c8d4;
+  --text:#f7edf0;--muted:#c3a4ae;
+  --r:18px;--sh:0 14px 44px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;color:var(--text);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(1100px 550px at 85% -5%,rgba(212,175,55,.14),transparent 60%),
+    radial-gradient(900px 520px at 0% 110%,rgba(170,45,75,.4),transparent 60%),
+    linear-gradient(155deg,var(--bg1),var(--bg2) 55%,var(--bg3));
+  display:flex;flex-direction:column;align-items:center;
+  padding:64px 16px 60px;
+}
+.wrap{width:100%;max-width:640px;position:relative;z-index:1}
+h1{font-family:Georgia,"Times New Roman",serif;font-size:1.9rem;text-align:center;margin:0 0 6px;
+  background:linear-gradient(90deg,var(--gold2),var(--gold),var(--gold2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:.5px}
+.sub{text-align:center;color:var(--muted);margin:0 0 14px;font-size:.92rem}
+.divider{text-align:center;color:var(--gold);letter-spacing:6px;margin:0 0 20px;font-size:1rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);
+  padding:20px;backdrop-filter:blur(6px);margin:0 0 18px}
+input[type=text],textarea{width:100%;background:rgba(0,0,0,.35);border:1px solid var(--line);border-radius:12px;
+  color:var(--text);padding:12px 14px;font:inherit;margin:0 0 10px}
+input:focus,textarea:focus{outline:1px solid var(--gold)}
+textarea{min-height:130px;resize:vertical;font-family:Georgia,serif;line-height:1.6}
+label{display:block;color:var(--muted);font-size:.82rem;margin:0 0 4px;letter-spacing:.5px}
+button{background:linear-gradient(135deg,#7a1f33,#a63a52);border:1px solid rgba(239,212,137,.35);
+  color:#ffe9ef;font:inherit;font-weight:600;padding:12px 18px;border-radius:14px;cursor:pointer;
+  transition:transform .15s ease,box-shadow .2s ease}
+button:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(212,175,55,.25)}
+button:active{transform:translateY(0)}
+button.gold{background:linear-gradient(135deg,#b8860b,#d4af37);color:#2a1202;border-color:transparent}
+button.ghost{background:rgba(255,255,255,.06);border-color:var(--line)}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap}
+.showcard{text-align:center;padding:30px 22px}
+.showcard .heart{font-size:2rem;margin-bottom:10px}
+.showcard .songtitle{font-family:Georgia,serif;font-size:1.9rem;color:var(--gold2);margin:4px 0}
+.showcard .artist{color:var(--muted);font-size:1rem;margin-bottom:16px}
+.playlink{display:inline-block;text-decoration:none;color:#2a1202;background:linear-gradient(135deg,#b8860b,#d4af37);
+  padding:12px 22px;border-radius:14px;font-weight:600;margin-bottom:18px}
+.playlink:hover{box-shadow:0 0 0 2px rgba(239,212,137,.5)}
+.lyrics{font-family:Georgia,"Times New Roman",serif;font-style:italic;white-space:pre-wrap;text-align:center;
+  font-size:1.05rem;color:var(--rose2);line-height:1.8;margin-top:6px}
+.note{color:var(--muted);font-size:.9rem;line-height:1.5;margin-top:18px;font-style:italic}
+.empty{color:var(--muted);font-style:italic;text-align:center;padding:30px 10px}
+.back{position:fixed;top:14px;left:14px;z-index:50}
+.back a{color:var(--gold2);text-decoration:none;font-size:.85rem;
+  background:rgba(0,0,0,.35);border:1px solid var(--line);padding:7px 12px;border-radius:12px}
+.back a:hover{border-color:var(--gold)}
+.heartfloat{position:fixed;bottom:-40px;z-index:0;opacity:0;pointer-events:none;animation:rise linear infinite}
+@keyframes rise{
+  0%{transform:translateY(0) rotate(0);opacity:0}
+  12%{opacity:.45}
+  85%{opacity:.3}
+  100%{transform:translateY(-105vh) rotate(22deg);opacity:0}
+}
+</style>
+</head>
+<body>
+<a class="back" href="../index.html">← Hub</a>
+<div class="wrap">
+  <h1>🎵 Our Song</h1>
+  <p class="sub">the one that belongs to us</p>
+  <div class="divider">🌹 ✦ ❤️ ✦ 🌹</div>
+
+  <div class="card" id="formCard">
+    <label for="title">Song title</label>
+    <input id="title" type="text" placeholder="e.g. Can't Help Falling in Love">
+    <label for="artist">Artist</label>
+    <input id="artist" type="text" placeholder="e.g. Elvis Presley">
+    <label for="link">Link (YouTube / Spotify…)</label>
+    <input id="link" type="text" placeholder="https://…">
+    <label for="lyrics">Lyrics (the part that's us)</label>
+    <textarea id="lyrics" placeholder="Wise men say, only fools rush in…"></textarea>
+    <label for="note">Why is this our song?</label>
+    <input id="note" type="text" placeholder="e.g. It was playing when we first danced">
+    <div class="btnrow">
+      <button id="saveBtn" class="gold">Make it our song 💖</button>
+    </div>
+  </div>
+
+  <div class="card" id="showCard" style="display:none">
+    <div class="showcard">
+      <div class="heart">🎵</div>
+      <div class="songtitle" id="sTitle"></div>
+      <div class="artist" id="sArtist"></div>
+      <a class="playlink" id="sLink" href="#" target="_blank" rel="noopener">▶ Play it</a>
+      <div class="lyrics" id="sLyrics"></div>
+      <div class="note" id="sNote"></div>
+      <div class="btnrow" style="justify-content:center;margin-top:22px">
+        <button class="ghost" id="editBtn">Edit ✏️</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var KEY='dfp_oursong';
+function load(){ try{ return JSON.parse(localStorage.getItem(KEY)) || null; }catch(e){ return null; } }
+function save(v){ localStorage.setItem(KEY, JSON.stringify(v)); }
+
+var song=load();
+var formCard=document.getElementById('formCard');
+var showCard=document.getElementById('showCard');
+
+function show(){
+  if(!song) return;
+  formCard.style.display='none';
+  showCard.style.display='block';
+  document.getElementById('sTitle').textContent=song.t;
+  document.getElementById('sArtist').textContent=song.a||'—';
+  var lk=document.getElementById('sLink');
+  if(song.l){ lk.href=song.l; lk.style.display='inline-block'; } else { lk.style.display='none'; }
+  document.getElementById('sLyrics').textContent=song.y||'…';
+  document.getElementById('sNote').textContent=song.n?('“'+song.n+'”'):'';
+}
+
+document.getElementById('saveBtn').onclick=function(){
+  var t=document.getElementById('title').value.trim();
+  if(!t){ document.getElementById('title').focus(); return; }
+  var l=document.getElementById('link').value.trim();
+  if(l && !/^https?:\/\//i.test(l)){ l='https://'+l; }
+  song={t:t,a:document.getElementById('artist').value.trim(),l:l,
+        y:document.getElementById('lyrics').value.trim(),n:document.getElementById('note').value.trim()};
+  save(song);
+  show();
+};
+
+document.getElementById('editBtn').onclick=function(){
+  showCard.style.display='none';
+  formCard.style.display='block';
+  if(song){
+    document.getElementById('title').value=song.t;
+    document.getElementById('artist').value=song.a;
+    document.getElementById('link').value=song.l||'';
+    document.getElementById('lyrics').value=song.y;
+    document.getElementById('note').value=song.n;
+  }
+};
+
+if(song){ show(); }
+</script>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>🗓️ Our Timeline — Darius &amp; Mada</title>
+<style>
+:root{
+  --bg1:#0c0205;--bg2:#260510;--bg3:#4a0d1b;
+  --card:rgba(255,255,255,.05);--line:rgba(212,175,55,.25);
+  --gold:#d4af37;--gold2:#efd489;--rose:#e896a9;--rose2:#f6c8d4;
+  --text:#f7edf0;--muted:#c3a4ae;--danger:#ff7b8a;
+  --r:18px;--sh:0 14px 44px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;color:var(--text);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(1100px 550px at 85% -5%,rgba(212,175,55,.14),transparent 60%),
+    radial-gradient(900px 520px at 0% 110%,rgba(170,45,75,.4),transparent 60%),
+    linear-gradient(155deg,var(--bg1),var(--bg2) 55%,var(--bg3));
+  display:flex;flex-direction:column;align-items:center;
+  padding:64px 16px 60px;
+}
+.wrap{width:100%;max-width:640px;position:relative;z-index:1}
+h1{font-family:Georgia,"Times New Roman",serif;font-size:1.9rem;text-align:center;margin:0 0 6px;
+  background:linear-gradient(90deg,var(--gold2),var(--gold),var(--gold2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:.5px}
+.sub{text-align:center;color:var(--muted);margin:0 0 14px;font-size:.92rem}
+.divider{text-align:center;color:var(--gold);letter-spacing:6px;margin:0 0 20px;font-size:1rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);
+  padding:20px;backdrop-filter:blur(6px);margin:0 0 18px}
+input[type=text],input[type=date]{width:100%;background:rgba(0,0,0,.35);border:1px solid var(--line);
+  border-radius:12px;color:var(--text);padding:12px 14px;font:inherit;margin:0 0 10px;color-scheme:dark}
+input:focus{outline:1px solid var(--gold)}
+select{width:100%;background:rgba(0,0,0,.35);border:1px solid var(--line);border-radius:12px;
+  color:var(--text);padding:12px 14px;font:inherit;margin:0 0 10px;color-scheme:dark}
+button{background:linear-gradient(135deg,#7a1f33,#a63a52);border:1px solid rgba(239,212,137,.35);
+  color:#ffe9ef;font:inherit;font-weight:600;padding:12px 18px;border-radius:14px;cursor:pointer;
+  transition:transform .15s ease,box-shadow .2s ease}
+button:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(212,175,55,.25)}
+button:active{transform:translateY(0)}
+button.gold{background:linear-gradient(135deg,#b8860b,#d4af37);color:#2a1202;border-color:transparent}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap}
+.tl{position:relative;padding-left:30px}
+.tl::before{content:'';position:absolute;left:9px;top:4px;bottom:4px;width:2px;
+  background:linear-gradient(180deg,var(--gold),rgba(212,175,55,.1))}
+.tl .m{position:relative;margin-bottom:20px}
+.tl .m::before{content:'';position:absolute;left:-26px;top:18px;width:14px;height:14px;border-radius:50%;
+  background:linear-gradient(135deg,#b8860b,#d4af37);box-shadow:0 0 0 4px rgba(212,175,55,.2)}
+.m .mb{background:rgba(0,0,0,.3);border:1px solid var(--line);border-radius:16px;padding:14px 16px}
+.m .em{font-size:1.6rem;display:inline-block;vertical-align:middle;margin-right:8px}
+.m .mt{font-family:Georgia,serif;font-weight:600;color:var(--gold2);font-size:1.05rem;vertical-align:middle}
+.m .md{color:var(--muted);font-size:.8rem;margin-top:4px;letter-spacing:.4px}
+.m .mn{color:var(--rose2);line-height:1.45;margin-top:8px;font-size:.92rem}
+.m .delrow{display:flex;justify-content:flex-end}
+.del{background:transparent;border:1px solid rgba(255,123,138,.4);color:var(--danger);
+  padding:5px 9px;border-radius:10px;font-size:.78rem;margin-top:8px}
+.del:hover{background:rgba(255,123,138,.12);box-shadow:none;transform:none}
+.empty{color:var(--muted);font-style:italic;text-align:center;padding:20px 10px;line-height:1.6}
+.back{position:fixed;top:14px;left:14px;z-index:50}
+.back a{color:var(--gold2);text-decoration:none;font-size:.85rem;
+  background:rgba(0,0,0,.35);border:1px solid var(--line);padding:7px 12px;border-radius:12px}
+.back a:hover{border-color:var(--gold)}
+.heartfloat{position:fixed;bottom:-40px;z-index:0;opacity:0;pointer-events:none;animation:rise linear infinite}
+@keyframes rise{
+  0%{transform:translateY(0) rotate(0);opacity:0}
+  12%{opacity:.45}
+  85%{opacity:.3}
+  100%{transform:translateY(-105vh) rotate(22deg);opacity:0}
+}
+</style>
+</head>
+<body>
+<a class="back" href="../index.html">← Hub</a>
+<div class="wrap">
+  <h1>🗓️ Our Timeline</h1>
+  <p class="sub">the milestones of us — firsts, favourites, everything</p>
+  <div class="divider">🌹 ✦ ❤️ ✦ 🌹</div>
+
+  <div class="card">
+    <select id="emojiSel">
+      <option value="💘">💘 First something</option>
+      <option value="😘">😘 First kiss</option>
+      <option value="🌹">🌹 First date</option>
+      <option value="✈️">✈️ First trip</option>
+      <option value="🎂">🎂 A celebration</option>
+      <option value="🏠">🏠 A home-y moment</option>
+      <option value="🎁">🎁 A surprise</option>
+      <option value="💫">💫 Just us</option>
+    </select>
+    <input id="title" type="text" placeholder="What happened? — e.g. Our first kiss">
+    <input id="date" type="date">
+    <input id="note" type="text" placeholder="A little note (optional)">
+    <div class="btnrow">
+      <button id="addBtn">Add to our story 💖</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="tl" id="tl"></div>
+    <div class="empty" id="empty">No milestones yet.<br>Add the very first one above — it becomes chapter one 🌹</div>
+  </div>
+</div>
+
+<script>
+var KEY='dfp_timeline';
+function load(){ try{ return JSON.parse(localStorage.getItem(KEY)) || []; }catch(e){ return []; } }
+function save(v){ localStorage.setItem(KEY, JSON.stringify(v)); }
+
+var ms=load();
+var tl=document.getElementById('tl');
+var emptyEl=document.getElementById('empty');
+
+function fmt(d){
+  return new Date(d).toLocaleDateString(undefined,{year:'numeric',month:'long',day:'numeric'});
+}
+
+function render(){
+  tl.innerHTML='';
+  emptyEl.style.display = ms.length ? 'none':'block';
+  var sorted=ms.slice().sort(function(a,b){return a.d-b.d;});
+  sorted.forEach(function(m){
+    var wrap=document.createElement('div'); wrap.className='m';
+    var b=document.createElement('div'); b.className='mb';
+    var head=document.createElement('div');
+    head.innerHTML='<span class="em">'+m.e+'</span><span class="mt"></span>';
+    head.querySelector('.mt').textContent=m.t;
+    var d=document.createElement('div'); d.className='md'; d.textContent=fmt(m.d);
+    b.appendChild(head); b.appendChild(d);
+    if(m.n){ var n=document.createElement('div'); n.className='mn'; n.textContent=m.n; b.appendChild(n); }
+    var dr=document.createElement('div'); dr.className='delrow';
+    var del=document.createElement('button'); del.className='del'; del.textContent='Remove ✕';
+    del.onclick=function(){ ms=ms.filter(function(x){return x!==m;}); save(ms); render(); };
+    dr.appendChild(del);
+    b.appendChild(dr);
+    wrap.appendChild(b);
+    tl.appendChild(wrap);
+  });
+}
+
+document.getElementById('addBtn').onclick=function(){
+  var t=document.getElementById('title').value.trim();
+  var d=document.getElementById('date').value;
+  if(!t||!d){ alert('Add a title and a date 💕'); return; }
+  ms.push({e:document.getElementById('emojiSel').value,t:t,d:new Date(d+'T00:00:00').getTime(),n:document.getElementById('note').value.trim()});
+  save(ms); render();
+  document.getElementById('title').value=''; document.getElementById('date').value=''; document.getElementById('note').value='';
+};
+
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>🌹 Date Planner — Darius &amp; Mada</title>
+<style>
+:root{
+  --bg1:#0c0205;--bg2:#260510;--bg3:#4a0d1b;
+  --card:rgba(255,255,255,.05);--line:rgba(212,175,55,.25);
+  --gold:#d4af37;--gold2:#efd489;--rose:#e896a9;--rose2:#f6c8d4;
+  --text:#f7edf0;--muted:#c3a4ae;--danger:#ff7b8a;
+  --r:18px;--sh:0 14px 44px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;color:var(--text);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(1100px 550px at 85% -5%,rgba(212,175,55,.14),transparent 60%),
+    radial-gradient(900px 520px at 0% 110%,rgba(170,45,75,.4),transparent 60%),
+    linear-gradient(155deg,var(--bg1),var(--bg2) 55%,var(--bg3));
+  display:flex;flex-direction:column;align-items:center;
+  padding:64px 16px 60px;
+}
+.wrap{width:100%;max-width:640px;position:relative;z-index:1}
+h1{font-family:Georgia,"Times New Roman",serif;font-size:1.9rem;text-align:center;margin:0 0 6px;
+  background:linear-gradient(90deg,var(--gold2),var(--gold),var(--gold2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:.5px}
+.sub{text-align:center;color:var(--muted);margin:0 0 14px;font-size:.92rem}
+.divider{text-align:center;color:var(--gold);letter-spacing:6px;margin:0 0 20px;font-size:1rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);
+  padding:20px;backdrop-filter:blur(6px);margin:0 0 18px}
+input[type=text]{width:100%;background:rgba(0,0,0,.35);border:1px solid var(--line);border-radius:12px;
+  color:var(--text);padding:12px 14px;font:inherit;margin:0 0 10px}
+input:focus{outline:1px solid var(--gold)}
+button{background:linear-gradient(135deg,#7a1f33,#a63a52);border:1px solid rgba(239,212,137,.35);
+  color:#ffe9ef;font:inherit;font-weight:600;padding:12px 18px;border-radius:14px;cursor:pointer;
+  transition:transform .15s ease,box-shadow .2s ease}
+button:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(212,175,55,.25)}
+button:active{transform:translateY(0)}
+button.gold{background:linear-gradient(135deg,#b8860b,#d4af37);color:#2a1202;border-color:transparent}
+button.ghost{background:rgba(255,255,255,.06);border-color:var(--line)}
+.fbtn.active{box-shadow:0 0 0 1px var(--gold);color:var(--gold2);background:rgba(212,175,55,.12)}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.bigout{font-size:1.2rem;text-align:center;padding:28px 20px;border-radius:var(--r);
+  background:rgba(0,0,0,.32);border:1px dashed var(--gold);min-height:90px;
+  display:flex;align-items:center;justify-content:center;margin-bottom:14px;line-height:1.5}
+.tag{display:inline-block;font-size:.72rem;color:#2a1202;background:linear-gradient(135deg,#b8860b,#d4af37);
+  border-radius:20px;padding:3px 10px;margin-top:8px;font-weight:700}
+.list{list-style:none;margin:0;padding:0}
+.list li{background:rgba(0,0,0,.28);border:1px solid var(--line);border-radius:14px;
+  padding:10px 14px;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.list li .txt{flex:1;line-height:1.4}
+.del{background:transparent;border:1px solid rgba(255,123,138,.4);color:var(--danger);
+  padding:5px 9px;border-radius:10px;font-size:.8rem}
+.del:hover{background:rgba(255,123,138,.12);box-shadow:none;transform:none}
+.empty{color:var(--muted);font-style:italic;text-align:center;padding:8px}
+.back{position:fixed;top:14px;left:14px;z-index:50}
+.back a{color:var(--gold2);text-decoration:none;font-size:.85rem;
+  background:rgba(0,0,0,.35);border:1px solid var(--line);padding:7px 12px;border-radius:12px}
+.back a:hover{border-color:var(--gold)}
+.pop{animation:pop .45s cubic-bezier(.2,1.6,.4,1)}
+@keyframes pop{0%{transform:scale(.7);opacity:0}100%{transform:scale(1);opacity:1}}
+.heartfloat{position:fixed;bottom:-40px;z-index:0;opacity:0;pointer-events:none;animation:rise linear infinite}
+@keyframes rise{
+  0%{transform:translateY(0) rotate(0);opacity:0}
+  12%{opacity:.45}
+  85%{opacity:.3}
+  100%{transform:translateY(-105vh) rotate(22deg);opacity:0}
+}
+</style>
+</head>
+<body>
+<a class="back" href="../index.html">← Hub</a>
+<div class="wrap">
+  <h1>🌹 Date Planner</h1>
+  <p class="sub">tonight, tomorrow, someday — pick one and go</p>
+  <div class="divider">🌹 ✦ ❤️ ✦ 🌹</div>
+
+  <div class="card" style="text-align:center">
+    <button class="gold" id="randBtn" style="font-size:1.05rem">Surprise me with a date 💘</button>
+    <div class="bigout" id="out" style="margin-top:16px">Tap to find tonight's adventure…</div>
+  </div>
+
+  <div class="card">
+    <h2 style="margin-top:0;color:var(--gold2);font-family:Georgia,serif;font-size:1.15rem">Add your own date idea</h2>
+    <input id="newIdea" type="text" placeholder="e.g. Picnic under the stars 🌌 (indoor, home, or out?)">
+    <select id="newType" style="width:100%;background:rgba(0,0,0,.35);border:1px solid var(--line);border-radius:12px;color:var(--text);padding:12px;font:inherit;margin-bottom:10px;color-scheme:dark">
+      <option value="out">🌄 Out &amp; about</option>
+      <option value="in">🏠 Cozy at home</option>
+      <option value="ad">✨ Adventure</option>
+    </select>
+    <div class="btnrow" style="justify-content:flex-start">
+      <button id="addBtn">Add 🌹</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="btnrow" style="margin-bottom:12px" id="filters">
+      <button class="ghost fbtn active" data-f="all">All</button>
+      <button class="ghost fbtn" data-f="out">🌄 Out &amp; about</button>
+      <button class="ghost fbtn" data-f="in">🏠 At home</button>
+      <button class="ghost fbtn" data-f="ad">✨ Adventure</button>
+    </div>
+    <ul class="list" id="list"></ul>
+    <div class="empty" id="empty">No date ideas here yet 🌹</div>
+  </div>
+</div>
+
+<script>
+var KEY='dfp_dates';
+var DEFAULTS=[
+  {t:'Picnic in the park at golden hour',k:'out'},
+  {t:'Cook dinner together, then dance in the kitchen',k:'in'},
+  {t:'Movie night with blankets, snacks and cuddles',k:'in'},
+  {t:'Stargazing somewhere far from the city lights',k:'ad'},
+  {t:'Coffee and a long walk through old streets',k:'out'},
+  {t:'Bake something from scratch, frosting everywhere',k:'in'},
+  {t:'Sunrise at a viewpoint',k:'ad'},
+  {t:'Board game night with silly stakes',k:'in'},
+  {t:'Visit a museum and pick our favourite painting',k:'out'},
+  {t:'Road trip with no playlist — just the two of us',k:'ad'},
+  {t:'Homemade pizza + a film neither of us has seen',k:'in'},
+  {t:'Write each other a letter, then read them aloud',k:'in'},
+  {t:'Farmers market + fresh flowers for her',k:'out'},
+  {t:'Make a "future us" vision board together',k:'in'},
+  {t:'Karaoke night, duets only',k:'in'},
+  {t:'Bike ride to somewhere new',k:'ad'},
+  {t:'Candlelit dinner — dress up, phones away',k:'in'},
+  {t:'Zoo or botanical garden, holding hands the whole time',k:'out'},
+  {t:'Learn a silly dance from a tutorial together',k:'in'},
+  {t:'Plan our dream holiday together on a map',k:'in'},
+  {t:'Street food crawl across the city',k:'ad'},
+  {t:'Photo walk — one camera, both of us',k:'out'},
+  {t:'Play a board game we invented ourselves',k:'in'},
+  {t:'Try a new sport neither of us has played',k:'ad'},
+  {t:'Bookshop date — pick a book for each other',k:'out'},
+  {t:'Recreate our first date, end to end',k:'ad'},
+  {t:'Spa night at home: face masks, music, tea',k:'in'},
+  {t:'Hot air balloon dream — or rooftop sunset as plan B',k:'ad'},
+  {t:'Paint and sip at home, masterpiece or mess',k:'in'},
+  {t:'A slow breakfast and zero plans after it',k:'in'}
+];
+function load(){ try{ var v=JSON.parse(localStorage.getItem(KEY)); return Array.isArray(v)?v:null; }catch(e){ return null; } }
+function save(v){ localStorage.setItem(KEY, JSON.stringify(v)); }
+
+var ideas=load() || DEFAULTS;
+if(load()===null){ save(ideas); }
+var filter='all';
+var out=document.getElementById('out');
+var listEl=document.getElementById('list');
+var emptyEl=document.getElementById('empty');
+
+function pool(){ return ideas.filter(function(i){ return filter==='all' || i.k===filter; }); }
+
+function render(){
+  listEl.innerHTML='';
+  var p=pool();
+  emptyEl.style.display = p.length ? 'none':'block';
+  p.forEach(function(i){
+    var li=document.createElement('li');
+    var sp=document.createElement('span'); sp.className='txt'; sp.textContent=i.t;
+    var b=document.createElement('button'); b.className='del'; b.textContent='✕';
+    b.onclick=function(){ ideas=ideas.filter(function(x){return x!==i;}); save(ideas); render(); };
+    li.appendChild(sp); li.appendChild(b);
+    listEl.appendChild(li);
+  });
+}
+
+document.getElementById('randBtn').onclick=function(){
+  var p=pool();
+  if(!p.length){ out.textContent='Nothing here yet — add a date idea below 💔'; return; }
+  var i=p[Math.floor(Math.random()*p.length)];
+  var tag=i.k==='out'?'🌄 Out &amp; about':i.k==='ad'?'✨ Adventure':'🏠 At home';
+  out.innerHTML=i.t+'<br><span class="tag">'+tag+'</span>';
+  out.classList.remove('pop'); void out.offsetWidth; out.classList.add('pop');
+};
+
+document.getElementById('addBtn').onclick=function(){
+  var v=document.getElementById('newIdea').value.trim();
+  if(!v) return;
+  ideas.push({t:v,k:document.getElementById('newType').value});
+  save(ideas); render();
+  document.getElementById('newIdea').value='';
+};
+
+document.querySelectorAll('.fbtn').forEach(function(btn){
+  btn.onclick=function(){
+    document.querySelectorAll('.fbtn').forEach(function(b){b.classList.remove('active');});
+    btn.classList.add('active');
+    filter=btn.getAttribute('data-f');
+    render();
+  };
+});
+render();
+</script>
+</body>
+</html>

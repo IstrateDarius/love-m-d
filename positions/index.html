@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>💞 Intimate Positions — Darius &amp; Mada</title>
+<style>
+:root{
+  --bg1:#0c0205;--bg2:#260510;--bg3:#4a0d1b;
+  --card:rgba(255,255,255,.05);--line:rgba(212,175,55,.25);
+  --gold:#d4af37;--gold2:#efd489;--rose:#e896a9;--rose2:#f6c8d4;
+  --text:#f7edf0;--muted:#c3a4ae;--danger:#ff7b8a;
+  --r:18px;--sh:0 14px 44px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;color:var(--text);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(1100px 550px at 85% -5%,rgba(212,175,55,.14),transparent 60%),
+    radial-gradient(900px 520px at 0% 110%,rgba(170,45,75,.4),transparent 60%),
+    linear-gradient(155deg,var(--bg1),var(--bg2) 55%,var(--bg3));
+  display:flex;flex-direction:column;align-items:center;
+  padding:64px 16px 60px;
+}
+.wrap{width:100%;max-width:720px;position:relative;z-index:1}
+h1{font-family:Georgia,"Times New Roman",serif;font-size:1.9rem;text-align:center;margin:0 0 6px;
+  background:linear-gradient(90deg,var(--gold2),var(--gold),var(--gold2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:.5px}
+.sub{text-align:center;color:var(--muted);margin:0 0 14px;font-size:.92rem}
+.divider{text-align:center;color:var(--gold);letter-spacing:6px;margin:0 0 20px;font-size:1rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);
+  padding:22px;backdrop-filter:blur(6px);margin:0 0 18px;text-align:center}
+button{background:linear-gradient(135deg,#7a1f33,#a63a52);border:1px solid rgba(239,212,137,.35);
+  color:#ffe9ef;font:inherit;font-weight:600;padding:14px 24px;border-radius:14px;cursor:pointer;
+  transition:transform .15s ease,box-shadow .2s ease;font-size:1.02rem;margin:6px}
+button:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(212,175,55,.25)}
+button:active{transform:translateY(0)}
+button.gold{background:linear-gradient(135deg,#b8860b,#d4af37);color:#2a1202;border-color:transparent}
+.filters{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:12px 0 6px}
+.f{border:1px solid var(--line);border-radius:12px;padding:8px 14px;font-size:.85rem;cursor:pointer;
+  background:rgba(0,0,0,.25);color:var(--muted);transition:all .15s ease;font-weight:400}
+.f.on{border-color:var(--gold);color:var(--gold2);background:rgba(212,175,55,.12)}
+.pos{background:rgba(0,0,0,.3);border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:var(--sh);
+  margin:0 0 14px;text-align:left;animation:fadein .3s ease}
+@keyframes fadein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.pos .name{font-family:Georgia,"Times New Roman",serif;font-size:1.3rem;color:var(--gold2);margin:0 0 8px}
+.pos .desc{color:var(--rose2);line-height:1.55;margin:0 0 10px}
+.pos .tags{display:flex;gap:8px;flex-wrap:wrap}
+.t{font-size:.72rem;padding:4px 10px;border-radius:20px;border:1px solid var(--line);color:var(--muted);letter-spacing:.4px}
+.t.easy{color:#9fe0a8;border-color:rgba(159,224,168,.35)}
+.t.medium{color:#ffcf66;border-color:rgba(255,207,102,.35)}
+.t.hard{color:#ff7b8a;border-color:rgba(255,123,138,.4)}
+.list{text-align:left}
+.search{width:100%;background:rgba(0,0,0,.35);border:1px solid var(--line);border-radius:12px;
+  color:var(--text);padding:12px 14px;font:inherit;margin:0 0 12px}
+.search:focus{outline:1px solid var(--gold)}
+.back{position:fixed;top:14px;left:14px;z-index:50}
+.back a{color:var(--gold2);text-decoration:none;font-size:.85rem;
+  background:rgba(0,0,0,.35);border:1px solid var(--line);padding:7px 12px;border-radius:12px}
+.back a:hover{border-color:var(--gold)}
+</style>
+</head>
+<body>
+<a class="back" href="../index.html">← Hub</a>
+<div class="wrap">
+  <h1>💞 Intimate Positions</h1>
+  <p class="sub">our private little guide — pick a mood, keep it playful, keep it ours</p>
+  <div class="divider">🌹 ✦ 💋 ✦ 🌹</div>
+
+  <div class="card">
+    <div class="filters" id="filters"></div>
+    <button class="gold" id="surprise">Surprise us 🎲</button>
+    <div class="status" id="status" style="color:var(--muted);font-size:.82rem;margin-top:10px;min-height:1.2em"></div>
+  </div>
+
+  <input class="search" id="search" type="text" placeholder="Search positions… (e.g. intimate, easy, standing)">
+
+  <div class="list" id="list"></div>
+</div>
+
+<script>
+var POSITIONS=[
+  {n:'Classic', d:'Face to face, chest to chest. The most intimate — you can kiss, whisper, and watch every reaction.', diff:1, tags:['intimate','easy','classic']},
+  {n:'Spooning', d:'Both on your sides, one behind the other. Slow, warm, perfect for lazy mornings and aftercare.', diff:1, tags:['intimate','easy','slow']},
+  {n:'Cowgirl', d:'She on top, in control of pace and depth. Great for eye contact and taking it slow or wild.', diff:2, tags:['control','she-leads','intimate']},
+  {n:'Reverse Cowgirl', d:'She on top facing away — a different view, deep angles, great for him watching her move.', diff:2, tags:['control','she-leads','deep']},
+  {n:'Doggy', d:'From behind, deep and primal. Add a mirror for extra heat or a handful of hair for control.', diff:2, tags:['deep','primal','behind']},
+  {n:'Missionary', d:'The timeless classic — full eye contact, full bodies, hands free to roam and pull each other closer.', diff:1, tags:['intimate','easy','classic']},
+  {n:'Lotus', d:'She sits on his lap facing him, legs wrapped around his waist. Seated and deeply intimate — like a slow embrace.', diff:3, tags:['intimate','seated','deep']},
+  {n:'Edge of the Bed', d:'She lies on her back at the edge, he stands. Great angles, great depth, easy on the knees.', diff:2, tags:['deep','standing','bed']},
+  {n:'Standing', d:'Against a wall or door, bodies pressed tight. Spontaneous, urgent, exciting — great for quick heat.', diff:3, tags:['standing','urgent','wall']},
+  {n:'Butterfly', d:'Her legs on his shoulders, hips tilted up. Intense depth and access — best when you want it deep.', diff:3, tags:['deep','flexible','intense']},
+  {n:'Pretzel', d:'Both on your sides, one leg hooked over his hip. Deep, snug, and easy to talk and kiss during.', diff:3, tags:['deep','side','intimate']},
+  {n:'The X', d:'Lying facing each other, one leg over the other’s hip. Slow, close, and wonderfully lazy.', diff:2, tags:['slow','side','intimate']},
+  {n:'Chair Ride', d:'He sits on a sturdy chair, she rides facing him — hands on his shoulders for leverage, or leaning back.', diff:2, tags:['seated','she-leads','furniture']},
+  {n:'Full Nelson', d:'He wraps his arms around her chest and hips from behind — deep, controlling, for when she wants to feel held tight.', diff:3, tags:['deep','control','behind']},
+  {n:'The Bridge', d:'She arches her back in a bridge position while he kneels — athletic, deep, and a showstopper.', diff:3, tags:['athletic','deep','flexible']},
+  {n:'Face-to-Face Sit', d:'Both sitting upright facing each other, legs intertwined. Slow and soulful — you never break eye contact.', diff:2, tags:['seated','intimate','slow']},
+  {n:'The T', d:'She lies perpendicular across the bed, he kneels beside her. Great angle for clitoral stimulation too.', diff:2, tags:['stimulation','easy','side']},
+  {n:'The G-Whiz', d:'She lies on her back with her bottom at the edge, he kneels and enters from a standing angle — famously deep.', diff:3, tags:['deep','stimulation','bed']},
+  {n:'Amazon', d:'She’s on top, facing away, doing most of the work — he gets a full view and both hands free.', diff:3, tags:['she-leads','deep','control']},
+  {n:'The Wrap', d:'Spooning variation with her top leg pulled back over his hip — tighter, deeper, and still lazy-romantic.', diff:2, tags:['side','deep','slow']},
+  {n:'The Staircase', d:'She sits on the stairs, he kneels below — playful, different height, great for a change of scenery.', diff:3, tags:['furniture','playful','deep']},
+  {n:'The Table Edge', d:'She sits on the kitchen table edge, he stands in front — spontaneous, romantic, very first-date-of-the-rest-of-your-life.', diff:2, tags:['furniture','standing','romantic']},
+  {n:'The Shoelace', d:'She lies on her side, top leg bent, he kneels behind — snug and deep with easy rhythm.', diff:2, tags:['side','deep','easy']},
+  {n:'The Butterfly Upside Down', d:'She lies on her back with her hips tilted up on a pillow, legs spread wide — deep and unhurried.', diff:2, tags:['deep','easy','bed']},
+  {n:'The Bear Hug', d:'He holds her up against a wall, her legs around his waist — total trust, total closeness.', diff:3, tags:['standing','wall','romantic']},
+  {n:'The Cowgirl Twist', d:'Cowgirl, but she leans forward to kiss and whisper while she moves — intimate and in control.', diff:2, tags:['she-leads','intimate','control']},
+  {n:'The Reverse Lotus', d:'Lotus position, but she faces away — deep, seated, and a completely different closeness.', diff:3, tags:['seated','deep','intimate']},
+  {n:'The Low Rider', d:'She squats over him — deep, athletic, and she controls the rhythm completely.', diff:3, tags:['she-leads','deep','athletic']},
+  {n:'The Horizontal Bounce', d:'He sits, she lies back on the bed with her legs on his shoulders — a smooth, deep rhythm that’s easy to maintain.', diff:3, tags:['deep','bed','intense']},
+  {n:'The Dolphin', d:'She lies on her back, knees toward her chest, he kneels and enters deep — maximum depth, minimal effort.', diff:2, tags:['deep','easy','intense']}
+];
+
+var DIFF_NAMES={1:'Easy',2:'Medium',3:'Adventurous'};
+var FILTERS=[['all','All 💞'],['intimate','Intimate 🤍'],['deep','Deep 🔥'],['she-leads','She Leads 👑'],['standing','Standing 🧱'],['seated','Seated 🪑'],['slow','Slow 🌙']];
+var activeFilter='all';
+var lastIdx=-1;
+
+var filtersEl=document.getElementById('filters');
+var listEl=document.getElementById('list');
+var searchEl=document.getElementById('search');
+var statusEl=document.getElementById('status');
+
+function esc(s){ var d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+
+function render(){
+  var q=searchEl.value.trim().toLowerCase();
+  var shown=POSITIONS.filter(function(p){
+    if(activeFilter!=='all' && p.tags.indexOf(activeFilter)===-1) return false;
+    if(q && (p.n.toLowerCase().indexOf(q)===-1) && p.tags.join(' ').indexOf(q)===-1 && p.d.toLowerCase().indexOf(q)===-1) return false;
+    return true;
+  });
+  listEl.innerHTML='';
+  if(!shown.length){ listEl.innerHTML='<div style="color:var(--muted);text-align:center;padding:20px">No positions match — try another filter 💕</div>'; return; }
+  shown.forEach(function(p){
+    var div=document.createElement('div'); div.className='pos';
+    div.innerHTML='<h3 class="name">'+esc(p.n)+'</h3><p class="desc">'+esc(p.d)+'</p>'+
+      '<div class="tags"><span class="t '+ (p.diff===1?'easy':p.diff===2?'medium':'hard') +'">'+DIFF_NAMES[p.diff]+'</span>'+ 
+      p.tags.map(function(t){return '<span class="t">'+esc(t)+'</span>';}).join('')+'</div>';
+    listEl.appendChild(div);
+  });
+  statusEl.textContent=shown.length+' positions';
+}
+
+FILTERS.forEach(function(f){
+  var b=document.createElement('span');
+  b.className='f'+(f[0]===activeFilter?' on':'');
+  b.textContent=f[1];
+  b.onclick=function(){
+    activeFilter=f[0];
+    document.querySelectorAll('.f').forEach(function(x){x.classList.remove('on');});
+    b.classList.add('on');
+    render();
+  };
+  filtersEl.appendChild(b);
+});
+
+document.getElementById('surprise').onclick=function(){
+  var i;
+  do{ i=Math.floor(Math.random()*POSITIONS.length); }while(i===lastIdx && POSITIONS.length>1);
+  lastIdx=i;
+  var p=POSITIONS[i];
+  statusEl.innerHTML='🎲 Tonight’s pick: <b>'+esc(p.n)+'</b> — '+DIFF_NAMES[p.diff].toLowerCase()+' ('+esc(p.tags[0])+')';
+  searchEl.value='';
+  activeFilter='all';
+  document.querySelectorAll('.f').forEach(function(x){x.classList.toggle('on', x.textContent.indexOf('All')!==-1);});
+  render();
+  var cards=listEl.querySelectorAll('.pos');
+  if(cards.length){ cards.forEach(function(c){ if(c.querySelector('.name').textContent===p.n){ c.scrollIntoView({behavior:'smooth',block:'center'}); c.style.borderColor='var(--gold)'; } }); }
+};
+
+searchEl.addEventListener('input', render);
+render();
+</script>
+</body>
+</html>

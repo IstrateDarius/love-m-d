@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>🌟 Compliment Generator — Darius &amp; Mada</title>
+<style>
+:root{
+  --bg1:#0c0205;--bg2:#260510;--bg3:#4a0d1b;
+  --card:rgba(255,255,255,.05);--line:rgba(212,175,55,.25);
+  --gold:#d4af37;--gold2:#efd489;--rose:#e896a9;--rose2:#f6c8d4;
+  --text:#f7edf0;--muted:#c3a4ae;
+  --r:18px;--sh:0 14px 44px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;color:var(--text);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(1100px 550px at 85% -5%,rgba(212,175,55,.14),transparent 60%),
+    radial-gradient(900px 520px at 0% 110%,rgba(170,45,75,.4),transparent 60%),
+    linear-gradient(155deg,var(--bg1),var(--bg2) 55%,var(--bg3));
+  display:flex;flex-direction:column;align-items:center;
+  padding:64px 16px 60px;
+}
+.wrap{width:100%;max-width:640px;position:relative;z-index:1}
+h1{font-family:Georgia,"Times New Roman",serif;font-size:1.9rem;text-align:center;margin:0 0 6px;
+  background:linear-gradient(90deg,var(--gold2),var(--gold),var(--gold2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:.5px}
+.sub{text-align:center;color:var(--muted);margin:0 0 14px;font-size:.92rem}
+.divider{text-align:center;color:var(--gold);letter-spacing:6px;margin:0 0 20px;font-size:1rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);
+  padding:24px;backdrop-filter:blur(6px);margin:0 0 18px;text-align:center}
+button{background:linear-gradient(135deg,#7a1f33,#a63a52);border:1px solid rgba(239,212,137,.35);
+  color:#ffe9ef;font:inherit;font-weight:600;padding:14px 22px;border-radius:14px;cursor:pointer;
+  transition:transform .15s ease,box-shadow .2s ease}
+button:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(212,175,55,.25)}
+button:active{transform:scale(.96)}
+button.gold{background:linear-gradient(135deg,#b8860b,#d4af37);color:#2a1202;border-color:transparent;font-size:1.1rem}
+button.ghost{background:rgba(255,255,255,.06);border-color:var(--line)}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:14px}
+.bigout{font-family:Georgia,"Times New Roman",serif;font-size:1.5rem;color:var(--rose2);line-height:1.6;
+  padding:30px 12px;min-height:130px;display:flex;align-items:center;justify-content:center}
+.count{color:var(--muted);font-size:.85rem;margin-top:16px}
+.copyok{color:#7ddb9a;font-size:.85rem;opacity:0;transition:opacity .3s}
+.copyok.show{opacity:1}
+.pop{animation:pop .5s cubic-bezier(.2,1.6,.4,1)}
+@keyframes pop{0%{transform:scale(.8);opacity:0}100%{transform:scale(1);opacity:1}}
+.back{position:fixed;top:14px;left:14px;z-index:50}
+.back a{color:var(--gold2);text-decoration:none;font-size:.85rem;
+  background:rgba(0,0,0,.35);border:1px solid var(--line);padding:7px 12px;border-radius:12px}
+.back a:hover{border-color:var(--gold)}
+.heartfloat{position:fixed;bottom:-40px;z-index:0;opacity:0;pointer-events:none;animation:rise linear infinite}
+@keyframes rise{
+  0%{transform:translateY(0) rotate(0);opacity:0}
+  12%{opacity:.45}
+  85%{opacity:.3}
+  100%{transform:translateY(-105vh) rotate(22deg);opacity:0}
+}
+</style>
+</head>
+<body>
+<a class="back" href="../index.html">← Hub</a>
+<div class="wrap">
+  <h1>🌟 Compliment Generator</h1>
+  <p class="sub">one tap, one truth — use it on each other daily</p>
+  <div class="divider">🌹 ✦ ❤️ ✦ 🌹</div>
+
+  <div class="card">
+    <button class="gold" id="genBtn">Give me a compliment 💖</button>
+    <div class="bigout" id="out">…</div>
+    <div class="btnrow">
+      <button class="ghost" id="copyBtn">Copy it ✂️</button>
+      <span class="copyok" id="copyOk">copied! 💌</span>
+    </div>
+    <div class="count">you've given <b id="count" style="color:var(--gold2)">0</b> compliments so far</div>
+  </div>
+</div>
+
+<script>
+var KEY='dfp_comp_count';
+var COMPS=[
+  'You are the most beautiful part of my every day.',
+  'Your laugh could fix the whole world.',
+  'I am a better person because I love you.',
+  'You make even the most ordinary moment feel like a movie.',
+  'Your heart is the kindest thing I have ever known.',
+  'You are my favourite hello and my hardest goodbye.',
+  'The way you care for people is a rare, gorgeous thing.',
+  'You are exactly who I want, exactly as you are.',
+  'Your smile is my favourite place to be.',
+  'I would choose you, in every life, in every version of me.',
+  'You make me feel safe in a way no one else can.',
+  'Everything is softer and warmer when you are near.',
+  'You are stunning — inside and out, always.',
+  'I love the way your eyes light up when you talk about things you love.',
+  'You are the reason ordinary days feel like holidays.',
+  'Your hugs are the best medicine I know.',
+  'You are my home, wherever we are.',
+  'There is no one else I would rather build a life with.',
+  'You are the best thing that ever happened to me — and I mean it.',
+  'You make loving you the easiest thing I have ever done.',
+  'Your voice is my favourite sound.',
+  'I love you more every single day, and I thought it was already a lot.',
+  'You are my favourite person to be bored with.',
+  'The world is luckier because you are in it.',
+  'You are everything I never knew I was looking for.'
+];
+function loadCount(){ try{ return parseInt(localStorage.getItem(KEY),10)||0; }catch(e){ return 0; } }
+
+var count=loadCount();
+document.getElementById('count').textContent=count;
+var last=-1;
+
+document.getElementById('genBtn').onclick=function(){
+  var idx;
+  do{ idx=Math.floor(Math.random()*COMPS.length); }while(idx===last && COMPS.length>1);
+  last=idx;
+  var el=document.getElementById('out');
+  el.textContent=COMPS[idx]+' 💖';
+  el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop');
+  count++;
+  document.getElementById('count').textContent=count;
+  try{ localStorage.setItem(KEY,String(count)); }catch(e){}
+};
+
+document.getElementById('copyBtn').onclick=function(){
+  var t=document.getElementById('out').textContent.replace(' 💖','');
+  var ok=document.getElementById('copyOk');
+  if(navigator.clipboard){ navigator.clipboard.writeText(t).then(function(){
+    ok.classList.add('show'); setTimeout(function(){ ok.classList.remove('show'); },1500);
+  }); }
+  else{
+    var ta=document.createElement('textarea'); ta.value=t; document.body.appendChild(ta);
+    ta.select(); try{ document.execCommand('copy'); }catch(e){}
+    ta.remove();
+    ok.classList.add('show'); setTimeout(function(){ ok.classList.remove('show'); },1500);
+  }
+};
+</script>
+</body>
+</html>

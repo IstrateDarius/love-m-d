@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>💘 Love Quiz — Darius &amp; Mada</title>
+<style>
+:root{
+  --bg1:#0c0205;--bg2:#260510;--bg3:#4a0d1b;
+  --card:rgba(255,255,255,.05);--line:rgba(212,175,55,.25);
+  --gold:#d4af37;--gold2:#efd489;--rose:#e896a9;--rose2:#f6c8d4;
+  --text:#f7edf0;--muted:#c3a4ae;--danger:#ff7b8a;
+  --r:18px;--sh:0 14px 44px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;color:var(--text);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(1100px 550px at 85% -5%,rgba(212,175,55,.14),transparent 60%),
+    radial-gradient(900px 520px at 0% 110%,rgba(170,45,75,.4),transparent 60%),
+    linear-gradient(155deg,var(--bg1),var(--bg2) 55%,var(--bg3));
+  display:flex;flex-direction:column;align-items:center;
+  padding:64px 16px 60px;
+}
+.wrap{width:100%;max-width:640px;position:relative;z-index:1}
+h1{font-family:Georgia,"Times New Roman",serif;font-size:1.9rem;text-align:center;margin:0 0 6px;
+  background:linear-gradient(90deg,var(--gold2),var(--gold),var(--gold2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:.5px}
+.sub{text-align:center;color:var(--muted);margin:0 0 14px;font-size:.92rem}
+.divider{text-align:center;color:var(--gold);letter-spacing:6px;margin:0 0 20px;font-size:1rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);
+  padding:20px;backdrop-filter:blur(6px);margin:0 0 18px}
+input[type=text]{width:100%;background:rgba(0,0,0,.35);border:1px solid var(--line);border-radius:12px;
+  color:var(--text);padding:12px 14px;font:inherit;margin:0 0 10px}
+input:focus{outline:1px solid var(--gold)}
+button{background:linear-gradient(135deg,#7a1f33,#a63a52);border:1px solid rgba(239,212,137,.35);
+  color:#ffe9ef;font:inherit;font-weight:600;padding:12px 18px;border-radius:14px;cursor:pointer;
+  transition:transform .15s ease,box-shadow .2s ease}
+button:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(212,175,55,.25)}
+button:active{transform:translateY(0)}
+button.gold{background:linear-gradient(135deg,#b8860b,#d4af37);color:#2a1202;border-color:transparent}
+button.ghost{background:rgba(255,255,255,.06);border-color:var(--line)}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap}
+.opt{display:block;width:100%;text-align:left;margin-bottom:10px;background:rgba(255,255,255,.06);border-color:var(--line)}
+.opt:hover{transform:none;box-shadow:0 0 0 1px var(--gold)}
+.opt:disabled{opacity:.45;cursor:default;transform:none;box-shadow:none}
+.opt.correct{background:linear-gradient(135deg,#0f5c2f,#1d8a4a);color:#eafff2;border-color:transparent;opacity:1}
+.opt.wrong{background:rgba(255,123,138,.2);border-color:rgba(255,123,138,.5);opacity:.85}
+.qnum{color:var(--muted);font-size:.8rem;letter-spacing:1px}
+.qtext{font-family:Georgia,serif;font-size:1.25rem;line-height:1.45;margin:6px 0 16px;color:var(--rose2)}
+.list{list-style:none;margin:0;padding:0}
+.list li{background:rgba(0,0,0,.28);border:1px solid var(--line);border-radius:14px;
+  padding:10px 14px;margin-bottom:8px}
+.list li b{color:var(--gold2)}
+.del{background:transparent;border:1px solid rgba(255,123,138,.4);color:var(--danger);
+  padding:5px 9px;border-radius:10px;font-size:.8rem;margin-top:6px}
+.del:hover{background:rgba(255,123,138,.12);box-shadow:none;transform:none}
+.empty{color:var(--muted);font-style:italic;text-align:center;padding:8px}
+.back{position:fixed;top:14px;left:14px;z-index:50}
+.back a{color:var(--gold2);text-decoration:none;font-size:.85rem;
+  background:rgba(0,0,0,.35);border:1px solid var(--line);padding:7px 12px;border-radius:12px}
+.back a:hover{border-color:var(--gold)}
+.score{text-align:center;font-size:2.2rem;color:var(--gold2);font-weight:700;font-family:Georgia,serif;margin:8px 0}
+.scoremsg{text-align:center;color:var(--rose2);font-size:1.05rem;line-height:1.5;margin-bottom:16px}
+.heartfloat{position:fixed;bottom:-40px;z-index:0;opacity:0;pointer-events:none;animation:rise linear infinite}
+@keyframes rise{
+  0%{transform:translateY(0) rotate(0);opacity:0}
+  12%{opacity:.45}
+  85%{opacity:.3}
+  100%{transform:translateY(-105vh) rotate(22deg);opacity:0}
+}
+</style>
+</head>
+<body>
+<a class="back" href="../index.html">← Hub</a>
+<div class="wrap">
+  <h1>💘 Love Quiz</h1>
+  <p class="sub">how well do you know me? (questions are editable below)</p>
+  <div class="divider">🌹 ✦ ❤️ ✦ 🌹</div>
+
+  <div class="card" id="quizCard">
+    <div class="qnum" id="qnum"></div>
+    <div class="qtext" id="qtext"></div>
+    <div id="opts"></div>
+    <div class="btnrow" id="nextRow" style="display:none">
+      <button class="gold" id="nextBtn">Next 💘</button>
+    </div>
+  </div>
+
+  <div class="card" id="resultCard" style="display:none">
+    <div class="qnum" style="text-align:center">your score</div>
+    <div class="score" id="score"></div>
+    <div class="scoremsg" id="scoremsg"></div>
+    <div class="btnrow" style="justify-content:center">
+      <button class="gold" id="againBtn">Play again 💖</button>
+    </div>
+  </div>
+
+  <div class="card" id="manageCard">
+    <h2 style="margin-top:0;color:var(--gold2);font-family:Georgia,serif;font-size:1.15rem">✏️ Edit the questions</h2>
+    <input id="nq" type="text" placeholder="Question — e.g. What is my comfort food?">
+    <input id="nqo" type="text" placeholder="Answer options, comma-separated — e.g. Pizza, Pasta, Sushi, Tacos">
+    <input id="nqc" type="text" placeholder="Correct option number (1 = first)">
+    <div class="btnrow" style="margin-bottom:14px">
+      <button id="addQBtn">Add question 💘</button>
+    </div>
+    <ul class="list" id="qlist"></ul>
+  </div>
+</div>
+
+<script>
+var KEY='dfp_quiz';
+var DEFAULTS=[
+  {q:'What is my favourite thing about you?',o:['Your laugh','Your eyes','The way you care for me','All of the above'],a:3},
+  {q:'Where would I want to go on our dream trip?',o:['A quiet beach','The mountains','A busy city','Somewhere I\'ve never been'],a:3},
+  {q:'What is my comfort food?',o:['Pizza','Anything we cook together','Sweets','Soup'],a:1},
+  {q:'What makes me happiest on a weekend?',o:['Sleeping in','Time with you','A walk outside','All of the above'],a:3},
+  {q:'What song always makes me think of you?',o:['Our song','A love ballad','Whatever is on the radio','Every song'],a:3},
+  {q:'If I could talk to you all day, I would…',o:['Call you at midnight','Send tiny texts all day','Make a whole day of it','Every option, every day'],a:3},
+  {q:'My ideal date night?',o:['Dinner and dancing','Netflix and cuddles','Stargazing','Any date, as long as it\'s you'],a:3},
+  {q:'What do I love most about us?',o:['We laugh together','We forgive each other','We are a team','All of it'],a:3}
+];
+function load(){ try{ var v=JSON.parse(localStorage.getItem(KEY)); return Array.isArray(v)?v:null; }catch(e){ return null; } }
+function save(v){ localStorage.setItem(KEY, JSON.stringify(v)); }
+
+var qs=load() || DEFAULTS;
+if(load()===null){ save(qs); }
+
+var qi=0, score=0, answered=false;
+var quizCard=document.getElementById('quizCard');
+var resultCard=document.getElementById('resultCard');
+var qnum=document.getElementById('qnum');
+var qtext=document.getElementById('qtext');
+var opts=document.getElementById('opts');
+var nextRow=document.getElementById('nextRow');
+
+function msgFor(pct){
+  if(pct===100) return '100%!! You know me perfectly — because you already know me by heart 💖';
+  if(pct>=80) return 'Wow — you really know me. I love being understood by you 💘';
+  if(pct>=60) return 'Pretty good, my love — I\'ll let you study my favourites 😉🌹';
+  return 'We have a lifetime to learn each other. Let\'s start again? 💌';
+}
+
+function showQ(){
+  answered=false;
+  var q=qs[qi];
+  qnum.textContent='Question '+(qi+1)+' of '+qs.length;
+  qtext.textContent=q.q;
+  opts.innerHTML='';
+  nextRow.style.display='none';
+  q.o.forEach(function(opt,idx){
+    var b=document.createElement('button');
+    b.className='opt';
+    b.textContent=(idx+1)+'. '+opt;
+    b.onclick=function(){ pick(idx,b); };
+    opts.appendChild(b);
+  });
+}
+
+function pick(idx,btn){
+  if(answered) return;
+  answered=true;
+  var q=qs[qi];
+  var correct=q.a===idx;
+  if(correct) score++;
+  document.querySelectorAll('.opt').forEach(function(b){ b.disabled=true; });
+  document.querySelectorAll('.opt')[q.a].classList.add('correct');
+  if(!correct) btn.classList.add('wrong');
+  nextRow.style.display='flex';
+}
+
+document.getElementById('nextBtn').onclick=function(){
+  qi++;
+  if(qi>=qs.length){ finish(); } else { showQ(); }
+};
+
+function finish(){
+  quizCard.style.display='none';
+  resultCard.style.display='block';
+  var pct=qs.length?Math.round(score/qs.length*100):0;
+  document.getElementById('score').textContent=pct+'%';
+  document.getElementById('scoremsg').textContent=msgFor(pct);
+}
+
+document.getElementById('againBtn').onclick=function(){
+  qi=0; score=0; answered=false;
+  resultCard.style.display='none';
+  quizCard.style.display='block';
+  showQ();
+};
+
+document.getElementById('addQBtn').onclick=function(){
+  var qv=document.getElementById('nq').value.trim();
+  var ov=document.getElementById('nqo').value;
+  var cv=parseInt(document.getElementById('nqc').value,10);
+  var optsArr=ov.split(',').map(function(s){return s.trim();}).filter(Boolean);
+  if(!qv||optsArr.length<2||isNaN(cv)||cv<1||cv>optsArr.length){
+    alert('Please fill the question, at least 2 options, and a correct answer number 💕');
+    return;
+  }
+  qs.push({q:qv,o:optsArr,a:cv-1});
+  save(qs); renderManage();
+  document.getElementById('nq').value='';
+  document.getElementById('nqo').value='';
+  document.getElementById('nqc').value='';
+};
+
+function renderManage(){
+  var l=document.getElementById('qlist');
+  l.innerHTML='';
+  qs.forEach(function(q){
+    var li=document.createElement('li');
+    var b=document.createElement('b'); b.textContent=q.q;
+    var p=document.createElement('div'); p.style.color='var(--muted)'; p.style.fontSize='.85rem';
+    p.textContent=q.o.join(' · ')+'   →   answer '+(q.a+1);
+    var d=document.createElement('button'); d.className='del'; d.textContent='Delete ✕';
+    d.onclick=function(){ qs=qs.filter(function(x){return x!==q;}); save(qs); renderManage(); };
+    li.appendChild(b); li.appendChild(p); li.appendChild(d);
+    l.appendChild(li);
+  });
+}
+
+renderManage();
+showQ();
+</script>
+</body>
+</html>

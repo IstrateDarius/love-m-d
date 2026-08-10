@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>🫂 Virtual Hug — Darius &amp; Mada</title>
+<style>
+:root{
+  --bg1:#0c0205;--bg2:#260510;--bg3:#4a0d1b;
+  --card:rgba(255,255,255,.05);--line:rgba(212,175,55,.25);
+  --gold:#d4af37;--gold2:#efd489;--rose:#e896a9;--rose2:#f6c8d4;
+  --text:#f7edf0;--muted:#c3a4ae;
+  --r:18px;--sh:0 14px 44px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;color:var(--text);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(1100px 550px at 85% -5%,rgba(212,175,55,.14),transparent 60%),
+    radial-gradient(900px 520px at 0% 110%,rgba(170,45,75,.4),transparent 60%),
+    linear-gradient(155deg,var(--bg1),var(--bg2) 55%,var(--bg3));
+  display:flex;flex-direction:column;align-items:center;
+  padding:64px 16px 60px;
+}
+.wrap{width:100%;max-width:640px;position:relative;z-index:1}
+h1{font-family:Georgia,"Times New Roman",serif;font-size:1.9rem;text-align:center;margin:0 0 6px;
+  background:linear-gradient(90deg,var(--gold2),var(--gold),var(--gold2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:.5px}
+.sub{text-align:center;color:var(--muted);margin:0 0 14px;font-size:.92rem}
+.divider{text-align:center;color:var(--gold);letter-spacing:6px;margin:0 0 20px;font-size:1rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);
+  padding:24px;backdrop-filter:blur(6px);margin:0 0 18px;text-align:center}
+button{background:linear-gradient(135deg,#7a1f33,#a63a52);border:1px solid rgba(239,212,137,.35);
+  color:#ffe9ef;font:inherit;font-weight:600;padding:14px 22px;border-radius:14px;cursor:pointer;
+  transition:transform .15s ease,box-shadow .2s ease}
+button:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(212,175,55,.25)}
+button:active{transform:scale(.95)}
+button.gold{background:linear-gradient(135deg,#b8860b,#d4af37);color:#2a1202;border-color:transparent;font-size:1.1rem}
+.hugstage{height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.hugemoji{font-size:5.4rem;transition:transform .15s}
+.hugemoji.squeeze{animation:squeeze 1s cubic-bezier(.3,1.4,.5,1)}
+@keyframes squeeze{
+  0%{transform:scale(1) rotate(-2deg)}
+  30%{transform:scale(1.35) rotate(3deg)}
+  55%{transform:scale(.95) rotate(-2deg)}
+  75%{transform:scale(1.18) rotate(2deg)}
+  100%{transform:scale(1)}
+}
+.msg{font-family:Georgia,serif;font-size:1.15rem;color:var(--rose2);line-height:1.5;margin-top:14px;min-height:56px}
+.counter{color:var(--muted);font-size:.88rem;margin-top:16px}
+.counter b{color:var(--gold2);font-size:1.2rem}
+.heartburst{position:fixed;pointer-events:none;z-index:90;animation:burst 1.2s ease-out forwards;font-size:1.5rem}
+@keyframes burst{0%{transform:translateY(0) scale(.4) rotate(0);opacity:1}100%{transform:translateY(-150px) scale(1.6) rotate(30deg);opacity:0}}
+.back{position:fixed;top:14px;left:14px;z-index:50}
+.back a{color:var(--gold2);text-decoration:none;font-size:.85rem;
+  background:rgba(0,0,0,.35);border:1px solid var(--line);padding:7px 12px;border-radius:12px}
+.back a:hover{border-color:var(--gold)}
+.heartfloat{position:fixed;bottom:-40px;z-index:0;opacity:0;pointer-events:none;animation:rise linear infinite}
+@keyframes rise{
+  0%{transform:translateY(0) rotate(0);opacity:0}
+  12%{opacity:.45}
+  85%{opacity:.3}
+  100%{transform:translateY(-105vh) rotate(22deg);opacity:0}
+}
+</style>
+</head>
+<body>
+<a class="back" href="../index.html">← Hub</a>
+<div class="wrap">
+  <h1>🫂 Virtual Hug</h1>
+  <p class="sub">a hug, delivered instantly — no matter how far apart we are</p>
+  <div class="divider">🌹 ✦ ❤️ ✦ 🌹</div>
+
+  <div class="card">
+    <div class="hugstage">
+      <div class="hugemoji" id="hug">🤗</div>
+    </div>
+    <button class="gold" id="hugBtn">Send a hug 💗</button>
+    <div class="msg" id="msg">Tap the button — a hug is on its way…</div>
+    <div class="counter">you've sent <b id="count">0</b> virtual hugs 💞</div>
+  </div>
+</div>
+
+<script>
+var KEY='dfp_hugs';
+var MSGS=[
+  'Hug delivered. You are wrapped in love, right now. 💗',
+  'A big, warm, hold-you-close kind of hug. Feel it? 🫂',
+  'This hug comes with a forehead kiss, just because. 💋',
+  'Received and returned, twice as tight. 💘',
+  'That was a squeeze-you-until-you-smile hug. 😊',
+  'Hug sent via light speed. Arriving… now. ✨',
+  'One giant bear hug, tagged with "you\'re amazing". 🐻',
+  'Hugging you so tight the miles turn to inches. 🌹',
+  'Instant hug. Extra-long. No timer. 🫶',
+  'A slow, peaceful, breathe-in-her-scent kind of hug. 🥰'
+];
+var EMO=['💗','❤️','💖','🫶','💘','✨','🌹','🥰'];
+function loadCount(){ try{ return parseInt(localStorage.getItem(KEY),10)||0; }catch(e){ return 0; } }
+
+var n=loadCount();
+document.getElementById('count').textContent=n;
+
+document.getElementById('hugBtn').onclick=function(){
+  var h=document.getElementById('hug');
+  h.classList.remove('squeeze'); void h.offsetWidth; h.classList.add('squeeze');
+  burst();
+  document.getElementById('msg').textContent=MSGS[Math.floor(Math.random()*MSGS.length)];
+  n++;
+  document.getElementById('count').textContent=n;
+  try{ localStorage.setItem(KEY,String(n)); }catch(e){}
+};
+
+function burst(){
+  for(var i=0;i<16;i++){
+    var s=document.createElement('span');
+    s.className='heartburst';
+    s.textContent=EMO[Math.floor(Math.random()*EMO.length)];
+    s.style.left=(10+Math.random()*80)+'vw';
+    s.style.top=(25+Math.random()*55)+'vh';
+    s.style.animationDelay=(Math.random()*0.5)+'s';
+    document.body.appendChild(s);
+    (function(el){ setTimeout(function(){ el.remove(); },1900); })(s);
+  }
+}
+</script>
+</body>
+</html>

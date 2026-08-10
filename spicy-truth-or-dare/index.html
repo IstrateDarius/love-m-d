@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>🔥 Spicy Truth or Dare — Darius &amp; Mada</title>
+<style>
+:root{
+  --bg1:#0c0205;--bg2:#260510;--bg3:#4a0d1b;
+  --card:rgba(255,255,255,.05);--line:rgba(212,175,55,.25);
+  --gold:#d4af37;--gold2:#efd489;--rose:#e896a9;--rose2:#f6c8d4;
+  --text:#f7edf0;--muted:#c3a4ae;--danger:#ff7b8a;
+  --r:18px;--sh:0 14px 44px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;color:var(--text);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(1100px 550px at 85% -5%,rgba(212,175,55,.14),transparent 60%),
+    radial-gradient(900px 520px at 0% 110%,rgba(170,45,75,.4),transparent 60%),
+    linear-gradient(155deg,var(--bg1),var(--bg2) 55%,var(--bg3));
+  display:flex;flex-direction:column;align-items:center;
+  padding:64px 16px 60px;
+}
+.wrap{width:100%;max-width:680px;position:relative;z-index:1}
+h1{font-family:Georgia,"Times New Roman",serif;font-size:1.9rem;text-align:center;margin:0 0 6px;
+  background:linear-gradient(90deg,var(--gold2),var(--gold),var(--gold2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:.5px}
+.sub{text-align:center;color:var(--muted);margin:0 0 14px;font-size:.92rem}
+.divider{text-align:center;color:var(--gold);letter-spacing:6px;margin:0 0 20px;font-size:1rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);
+  padding:22px;backdrop-filter:blur(6px);margin:0 0 18px;text-align:center}
+button{background:linear-gradient(135deg,#7a1f33,#a63a52);border:1px solid rgba(239,212,137,.35);
+  color:#ffe9ef;font:inherit;font-weight:600;padding:14px 24px;border-radius:14px;cursor:pointer;
+  transition:transform .15s ease,box-shadow .2s ease;font-size:1.02rem;margin:6px}
+button:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(212,175,55,.25)}
+button:active{transform:translateY(0)}
+button.truth{background:linear-gradient(135deg,#2a1a66,#4c2fa8)}
+button.dare{background:linear-gradient(135deg,#7a1f33,#a63a52)}
+.heat{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:12px 0 6px}
+.heat button{border:1px solid var(--line);border-radius:12px;padding:8px 14px;font-size:.85rem;cursor:pointer;
+  background:rgba(0,0,0,.25);color:var(--muted);font-weight:400}
+.heat button.on{border-color:var(--gold);color:var(--gold2);background:rgba(212,175,55,.12)}
+.prompt{font-family:Georgia,"Times New Roman",serif;font-size:1.3rem;line-height:1.5;min-height:7em;
+  display:flex;align-items:center;justify-content:center;color:var(--rose2);padding:14px 4px}
+.tag{display:inline-block;font-size:.75rem;letter-spacing:1px;padding:4px 12px;border-radius:20px;
+  border:1px solid var(--line);color:var(--gold2);text-transform:uppercase;margin-bottom:4px}
+.meta{color:var(--muted);font-size:.82rem;margin-top:8px;min-height:1.2em}
+.back{position:fixed;top:14px;left:14px;z-index:50}
+.back a{color:var(--gold2);text-decoration:none;font-size:.85rem;
+  background:rgba(0,0,0,.35);border:1px solid var(--line);padding:7px 12px;border-radius:12px}
+.back a:hover{border-color:var(--gold)}
+</style>
+</head>
+<body>
+<a class="back" href="../index.html">← Hub</a>
+<div class="wrap">
+  <h1>🔥 Spicy Truth or Dare</h1>
+  <p class="sub">the classic game, our version — pick your heat and take turns</p>
+  <div class="divider">🌹 ✦ 🔥 ✦ 🌹</div>
+
+  <div class="card">
+    <div class="heat" id="heat"></div>
+    <div class="prompt" id="prompt">Truth or dare, beautiful? 😏</div>
+    <div>
+      <button class="truth" id="truthBtn">TRUTH</button>
+      <button class="dare" id="dareBtn">DARE</button>
+    </div>
+    <div class="meta" id="meta"></div>
+  </div>
+</div>
+
+<script>
+var TRUTHS={
+  warm:[
+    'What was your first thought when you saw me the first time?',
+    'What’s the sweetest thing I’ve ever done for you?',
+    'Which of my outfits is your absolute favourite?',
+    'What do you think about when you can’t sleep?',
+    'What little thing do I do that you secretly love?',
+    'What’s the most romantic moment we’ve shared?',
+    'If we could teleport anywhere right now, where would you take me?',
+    'What’s something you’ve never told me?',
+    'What made you realise you wanted to be with me?',
+    'What song reminds you of me and why?'
+  ],
+  spicy:[
+    'What’s your favourite part of my body — no polite answers allowed?',
+    'What was your first thought the first time we kissed?',
+    'What’s the hottest thing I’ve ever done without realising it?',
+    'Describe our first time in three words.',
+    'What fantasy have you never told me about?',
+    'Where’s the boldest place you’d want to kiss me?',
+    'What do you love about the way I kiss?',
+    'What’s one thing you wish I’d do more often in the bedroom?',
+    'When did you first get butterflies that you never admitted?',
+    'What’s your favourite memory of my body?'
+  ],
+  inferno:[
+    'What’s your wildest fantasy that includes us?',
+    'What’s something you’d only ever do with me — no one else?',
+    'Be honest: what turns you on most about me?',
+    'What secret desire have you kept locked up the longest?',
+    'If you could pick one scenario for tonight, what would it be?',
+    'What do you imagine when you’re alone and thinking of me?',
+    'What’s the most adventurous thing you want to try with me?',
+    'What sound of mine drives you crazy?',
+    'Rate me as a kisser out of 10 — and what would make it an 11?',
+    'Tell me your most shameful, delicious secret fantasy — the one you blush to think about.'
+  ]
+};
+var DARES={
+  warm:[
+    'Send me a voice note right now saying something sweet.',
+    'Give me a slow-motion kiss — no giggling.',
+    'Do your best model walk across the room for me.',
+    'Let me pick our next date night — completely.',
+    'Dance with me for one full song, no phones.',
+    'Compliment me for a full 60 seconds without repeating yourself.',
+    'Recreate how you asked me out / made the first move.',
+    'Let me take a photo of you right now, however you look.',
+    'Tell me a secret you’ve been keeping from me.',
+    'Sing 10 seconds of our song, badly, on purpose.'
+  ],
+  spicy:[
+    'Give me a kiss where I don’t move — you do all the work.',
+    'Whisper in my ear what you want to do to me tonight.',
+    'Lose one item of clothing of your choice. Permanently this round.',
+    'Show me your favourite spot you love to be kissed.',
+    'Slow-dance with me for a whole song, lips to my ear.',
+    'Trace something on my skin and make me guess what it is.',
+    'Give me a 30-second massage anywhere I choose.',
+    'Let me blindfold you and give you a taste test with three surprises.',
+    'Kiss me the way you would if we had five minutes and nowhere to go.',
+    'Tell me exactly what you’re thinking while you look at me like that.'
+  ],
+  inferno:[
+    'Remove one item of clothing. If you lose, remove two.',
+    'Let me have full control for 10 minutes — you follow every instruction.',
+    'Demonstrate your favourite position without touching me. Yet.',
+    'Let me choose the music and you have to move to it — fully.',
+    'Pick a spot on my body and explore it with your lips for a full minute.',
+    'You owe me a raincheck: one wish, granted tonight, no refusals.',
+    'Swap clothes with me. Yes, really.',
+    'Let me cover your eyes and tease you until you beg me to stop.',
+    'Give me a lap dance. Badly is allowed. Not stopping is not.',
+    'Tonight’s rule: I lead, you follow — until I say otherwise.'
+  ]
+};
+var HEATS=[['warm','🌹 Warm',0],['spicy','🔥 Spicy',1],['inferno','😈 Inferno',2]];
+var heatKey='spicy';
+var lastPrompt='';
+
+var heatEl=document.getElementById('heat');
+HEATS.forEach(function(h){
+  var b=document.createElement('button');
+  b.textContent=h[1];
+  if(h[0]===heatKey) b.classList.add('on');
+  b.onclick=function(){
+    heatKey=h[0];
+    document.querySelectorAll('#heat button').forEach(function(x){x.classList.remove('on');});
+    b.classList.add('on');
+  };
+  heatEl.appendChild(b);
+});
+
+function show(arr,label){
+  var i;
+  var text;
+  do{ i=Math.floor(Math.random()*arr.length); text=arr[i]; }while(text===lastPrompt && arr.length>1);
+  lastPrompt=text;
+  document.getElementById('prompt').textContent=text;
+  document.getElementById('meta').textContent=label+' · level '+HEATS.find(function(h){return h[0]===heatKey;})[1];
+}
+document.getElementById('truthBtn').onclick=function(){ show(TRUTHS[heatKey],'TRUTH'); };
+document.getElementById('dareBtn').onclick=function(){ show(DARES[heatKey],'DARE'); };
+</script>
+</body>
+</html>
